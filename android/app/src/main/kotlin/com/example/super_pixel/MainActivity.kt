@@ -1,4 +1,4 @@
-package com.example.super_pixel
+package com.superopsMobileApp
 
 import io.flutter.embedding.android.FlutterActivity
 
