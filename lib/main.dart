@@ -1,16 +1,13 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: const FirebaseOptions(
-      apiKey: 'AIzaSyAz0bzcTxGiglDjjPcZM-UOKURbMf9WAqI',
-      appId: '1:757457021408:web:ac4c2bde904fbe84092385',
-      messagingSenderId: '757457021408',
-      projectId: 'superpixelapp',
-    ),
+
+  await Supabase.initialize(
+    url: 'https://mxzawzpwccjquaiygqmy.supabase.co',
+    anonKey:
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im14emF3enB3Y2NqcXVhaXlncW15Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDUzODYwMDgsImV4cCI6MjAyMDk2MjAwOH0.lByNBo8hYdt-q19SlkXbUqP5w4c-4irXnl8khXGyBNI',
   );
   runApp(const MyApp());
 }
@@ -43,20 +40,26 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
-  FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
   void _incrementCounter() {
     setState(() {
       _counter++;
     });
   }
 
+  Future check() async {
+    var response = await Supabase.instance.client.from('test').select();
+
+    print('response is $response');
+
+    return response;
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: _firestore.collection('assets').doc('asset1').get(),
+        future: check(),
         builder: (context, snapshot) {
-          print('data is ${snapshot.data?.data()}');
+          print('data is ${snapshot.data}');
           return Scaffold(
             appBar: AppBar(
               backgroundColor: Theme.of(context).colorScheme.inversePrimary,
