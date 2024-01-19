@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:super_pixel/controller/assets_controller.dart';
+import 'package:super_pixel/controller/employees_controller.dart';
 import 'package:super_pixel/ui/screens/asset_detail.dart';
+import 'package:super_pixel/ui/screens/employee_list.dart';
 import 'package:super_pixel/ui/screens/home.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 
@@ -28,6 +30,7 @@ class _AppState extends State<App> {
   @override
   void initState() {
     AssetsController.init();
+        EmployeesController.init();
     super.initState();
   }
 
@@ -56,7 +59,7 @@ class _AppState extends State<App> {
           return MaterialPageRoute(
               builder: (context) => AssetDetail(assetId: id ?? ''));
         }
-        return MaterialPageRoute(builder: (context) => const Home());
+        return MaterialPageRoute(builder: (context) => const EmployeeList());
       },
     );
   }
