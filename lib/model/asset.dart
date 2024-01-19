@@ -23,8 +23,8 @@ class Asset {
       assetId: data['assetId'],
       type: data['type'],
       model: data['model'],
-      owner: data['owner']??'',
-      serialNumber: data['serialNumber']??'',
+      owner: data['owner'] ?? '',
+      serialNumber: data['serialNumber'] ?? '',
       status: data['status'],
     );
   }

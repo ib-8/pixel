@@ -11,7 +11,7 @@ class AppRoute {
     );
   }
 
-  static void pop<T extends Object?>(BuildContext context) {
-    Navigator.pop(context);
+  static void pop<T extends Object?>(BuildContext context, [T? result]) {
+    Navigator.pop(context, result);
   }
 }
