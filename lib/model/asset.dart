@@ -11,7 +11,6 @@ class Asset {
   });
 
   String id;
-
   String type;
   String model;
   String owner;
@@ -22,24 +21,26 @@ class Asset {
 
   factory Asset.from(Map<String, dynamic> data) {
     return Asset(
-        id: data['id'].toString(),
-        type: data['type'],
-        model: data['model'],
-        owner: data['owner'] ?? '',
-        serialNumber: data['serialNumber'] ?? '',
-        status: data['status'],
-        ownerShip: data['ownership'] ?? '',
-        warrantyEndDate: data['warrantyEndDate'] ?? '');
+      id: data['id'].toString(),
+      type: data['type'],
+      model: data['model'],
+      owner: data['owner']??'',
+      serialNumber: data['serialNumber']??'',
+      status: data['status'],
+      ownerShip: data['ownership'] ?? '',
+      warrantyEndDate: data['warrantyEndDate'] ?? ''
+    );
   }
 
   Map toMap() {
     return {
+
       'type': type,
       'model': model,
       'owner': owner,
       'serialNumber': serialNumber,
       'status': status,
-      'ownerShip': ownerShip,
+      'ownership': ownerShip,
       'warrantyEndDate': warrantyEndDate
     };
   }
