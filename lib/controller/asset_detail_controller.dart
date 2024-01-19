@@ -66,8 +66,8 @@ class AssetDetailController extends ValueNotifier<AssetDetailState> {
     }
   }
 
-  static close() {
-    DependencyInjector.instance.unregister<AssetDetailController>();
+  static close(assetId) {
+    DependencyInjector.instance.unregister<AssetDetailController>(instanceName:assetId );
   }
 }
 
