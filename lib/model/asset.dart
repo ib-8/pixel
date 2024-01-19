@@ -37,7 +37,6 @@ class Asset {
 
   Map toMap() {
     return {
-      'id': id,
       'assetId': assetId,
       'type': type,
       'model': model,
