@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:super_pixel/controller/assets_controller.dart';
 import 'package:super_pixel/ui/screens/asset_detail.dart';
+import 'package:super_pixel/ui/screens/dashboard.dart';
 import 'package:super_pixel/ui/screens/home.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 
@@ -16,9 +18,20 @@ void main() async {
   runApp(const App());
 }
 
-class App extends StatelessWidget {
+class App extends StatefulWidget {
   const App({super.key});
 
+  @override
+  State<App> createState() => _AppState();
+}
+
+class _AppState extends State<App> {
+
+  @override
+  void initState() {
+    AssetsController.init();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

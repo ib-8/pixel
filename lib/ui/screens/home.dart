@@ -4,9 +4,12 @@ import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:super_pixel/controller/assets_controller.dart';
 import 'package:super_pixel/ui/routes/app_route.dart';
 import 'package:super_pixel/ui/screens/asset_detail.dart';
+import 'package:super_pixel/ui/screens/dashboard.dart';
 import 'package:super_pixel/ui/state_builder.dart';
 import 'package:super_pixel/ui/widget/app_sheet.dart';
 import 'package:super_pixel/ui/widget/app_text.dart';
+
+
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -18,13 +21,13 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   void initState() {
-    AssetsController.init();
+   
     super.initState();
   }
 
   @override
   void dispose() {
-    AssetsController.close();
+   
     super.dispose();
   }
 
@@ -34,6 +37,7 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         title: Text('All Assets'),
       ),
+      drawer: SideBar(),
       body: StateBuilder(
         controller: AssetsController.getInstance(),
         builder: (context, assets) {
@@ -95,6 +99,50 @@ class _HomeState extends State<Home> {
               );
             });
       }),
+    );
+  }
+}
+
+class SideBar extends StatelessWidget {
+  const SideBar({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          const DrawerHeader(
+            decoration: BoxDecoration(
+              color: Colors.blue,
+            ),
+            child: Text(
+              'Dashboard',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 24,
+              ),
+            ),
+          ),
+          ListTile(
+            title: const Text('Assets'),
+            onTap: () {
+              // Add functionality for Item 1
+              AppRoute.push(context,  Home());
+              //  Navigator.pop(context); // Close the drawer after selecting an item
+            },
+          ),
+          ListTile(
+            title: const Text('IT'),
+            onTap: () {
+              // Add functionality for Item 2
+               AppRoute.push(context,  Dashboard());
+              //  Navigator.pop(context);
+            },
+          ),
+          // Add more ListTiles as needed
+        ],
+      ),
     );
   }
 }
