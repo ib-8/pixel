@@ -15,6 +15,8 @@ import 'package:super_pixel/ui/widget/app_sheet.dart';
 import 'package:super_pixel/ui/screens/requester_list.dart';
 import 'package:super_pixel/ui/widget/app_text.dart';
 import 'package:super_pixel/ui/widget/asset_scanner.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,6 +27,7 @@ void main() async {
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im14emF3enB3Y2NqcXVhaXlncW15Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDUzODYwMDgsImV4cCI6MjAyMDk2MjAwOH0.lByNBo8hYdt-q19SlkXbUqP5w4c-4irXnl8khXGyBNI',
   );
   usePathUrlStrategy();
+
   runApp(const App());
 }
 
@@ -116,7 +119,7 @@ class _AppState extends State<App> {
 // Warranty Increase
 // Insurance
 
-// Requester Type
+// Requests Type
 // New
 // service
 // Replacement

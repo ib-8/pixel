@@ -5,7 +5,7 @@ class Event {
     this.expense,
     this.note,
     required this.type,
-    this.employee,
+    required this.employee,
     this.vendor,
   });
 
@@ -22,10 +22,10 @@ class Event {
       id: data['id'].toString(),
       assetId: data['assetId'].toString(),
       expense: data['expense'],
-      note: data['note'],
+      note: data['note'] ?? '',
       type: data['type'],
-      employee: data['employee'],
-      vendor: data['vendor'],
+      employee: data['employee'] ?? '',
+      vendor: data['vendor'] ?? '',
     );
   }
 
