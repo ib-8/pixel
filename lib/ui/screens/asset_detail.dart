@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:pretty_qr_code/pretty_qr_code.dart';
 import 'package:super_pixel/controller/asset_detail_controller.dart';
+import 'package:super_pixel/model/event.dart';
+import 'package:super_pixel/model/expenses.dart';
 import 'package:super_pixel/ui/sheets/association_form.dart';
 import 'package:super_pixel/ui/state_builder.dart';
 import 'package:super_pixel/ui/widget/app_sheet.dart';
 import 'package:super_pixel/ui/widget/app_text.dart';
+import 'package:super_pixel/utils/asset_expense_type.dart';
+import 'package:super_pixel/utils/event_type.dart';
 
 class AssetDetailsPage extends StatelessWidget {
   final List<List<String>> rowsData;
@@ -150,9 +154,9 @@ class _AssetDetailState extends State<AssetDetail>
                 Expanded(
                   child: TabBarView(
                     controller: _tabController,
-                    children: const [
-                      FlutterLogo(),
-                      AppText('data'),
+                    children:  [
+                      AssetEvents(events: data.events),
+                      AssetExpenses(expenses: data.expenses),
                     ],
                   ),
                 )
@@ -172,3 +176,92 @@ class _AssetDetailState extends State<AssetDetail>
     );
   }
 }
+class AssetEvents extends StatefulWidget {
+  const AssetEvents({
+
+    required this.events,
+    
+    super.key,});
+
+  final List<Event> events;
+
+  @override
+  State<AssetEvents> createState() => _AssetEventsState();
+}
+
+class _AssetEventsState extends State<AssetEvents> {
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: widget.events.length,
+      itemBuilder: (context, index) {
+        var event = widget.events[index];
+        var eventLog='';
+        switch (event.type) {
+          case EvenType.purchased:
+            eventLog = '${EvenType.purchased} from ${event.vendor}';
+            break;
+          case EvenType.associated:
+            eventLog = '${EvenType.associated} with ${event.employee}';
+            break;
+          case EvenType.dissociated:
+            eventLog = '${EvenType.dissociated} by ${event.employee}';
+            break;
+          case EvenType.disposed:
+            eventLog = '${EvenType.disposed} by ${event.employee}';
+            break;
+          case EvenType.missed:
+            eventLog = '${event.assetId} is ${EvenType.missed}';
+            break;
+          case EvenType.sentToService:
+            eventLog = '${event.assetId} is ${EvenType.sentToService}';
+            break;
+          case EvenType.receivedFromService:
+            eventLog = '${event.assetId} is ${EvenType.sentToService}';
+            break;      
+        }
+        return AppText(eventLog);
+  }
+  );
+}
+}
+
+class AssetExpenses extends StatefulWidget {
+  const AssetExpenses({
+    required this.expenses,
+    
+    super.key,});
+
+  final List<Expenses> expenses;
+
+  @override
+  State<AssetExpenses> createState() => _AssetExpensesState();
+}
+
+class _AssetExpensesState extends State<AssetExpenses> {
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: widget.expenses.length,
+      itemBuilder: (context, index) {
+        var expenses = widget.expenses[index];
+        var expenseLog='';
+        switch (expenses.type) {
+          case AssetExpenseType.newPurchase:
+            expenseLog = '${EvenType.purchased} - amount ${expenses.amount}';
+            break;
+          case AssetExpenseType.repair:
+            expenseLog = '${AssetExpenseType.repair} Reason - ${expenses.note} amount spent ${expenses.amount}';
+            break;
+          case AssetExpenseType.replacement:
+            expenseLog = '${AssetExpenseType.replacement} Reason - ${expenses.note}  amount spent ${expenses.amount}';
+            break;     
+        }
+        return AppText(expenseLog);
+  }
+  );
+}
+}
+
+
+

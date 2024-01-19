@@ -6,4 +6,5 @@ class DatabaseTable {
   static final employees = supabase.from('employees');
   static final events = supabase.from('events');
   static final requesters = supabase.from('requesters');
+  static final expenses = supabase.from('expenses');
 }

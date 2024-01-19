@@ -1,9 +1,9 @@
 class EvenType {
-  static String purchased = 'Purchased';
-  static String associated = 'Associated';
-  static String dissociated = 'Dissociated';
-  static String sentToService = 'Sent to service';
-  static String receivedFromService = 'Received from service';
-  static String missed = 'Missed';
-  static String disposed = 'Disposed';
+  static const String purchased = 'Purchased';
+  static const String associated = 'Associated';
+  static const String dissociated = 'Dissociated';
+  static const String sentToService = 'Sent to service';
+  static const String receivedFromService = 'Received from service';
+  static const String missed = 'Missed';
+  static const String disposed = 'Disposed';
 }
