@@ -1,6 +1,4 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:super_pixel/ui/routes/app_route.dart';
 import 'package:super_pixel/ui/widget/app_text.dart';
 import 'package:super_pixel/utils/association_type.dart';

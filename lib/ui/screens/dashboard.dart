@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:super_pixel/controller/assets_controller.dart';
 import 'package:super_pixel/model/asset.dart';
-import 'package:super_pixel/ui/screens/assetDetails.dart';
 import 'package:super_pixel/ui/state_builder.dart';
 import 'package:super_pixel/ui/routes/app_route.dart';
 import 'package:super_pixel/ui/screens/asset_detail.dart';
 import 'package:super_pixel/ui/widget/app_sheet.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
-import 'package:super_pixel/ui/screens/home.dart';
+import 'package:super_pixel/ui/screens/asset_list.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});

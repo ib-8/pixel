@@ -44,8 +44,8 @@ class Asset {
       'owner': owner,
       'serialNumber': serialNumber,
       'status': status,
-      'ownerShip':ownerShip,
-      'warrantyEndDate':warrantyEndDate
+      'ownerShip': ownerShip,
+      'warrantyEndDate': warrantyEndDate
     };
   }
 }

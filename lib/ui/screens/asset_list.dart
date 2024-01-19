@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:super_pixel/controller/assets_controller.dart';
 import 'package:super_pixel/ui/routes/app_route.dart';
 import 'package:super_pixel/ui/screens/asset_detail.dart';
@@ -10,25 +8,21 @@ import 'package:super_pixel/ui/widget/app_sheet.dart';
 import 'package:super_pixel/ui/widget/app_text.dart';
 import 'package:super_pixel/ui/widget/asset_scanner.dart';
 
-
-
-class Home extends StatefulWidget {
-  const Home({super.key});
+class AssetList extends StatefulWidget {
+  const AssetList({super.key});
 
   @override
-  State<Home> createState() => _HomeState();
+  State<AssetList> createState() => _AssetListState();
 }
 
-class _HomeState extends State<Home> {
+class _AssetListState extends State<AssetList> {
   @override
   void initState() {
-   
     super.initState();
   }
 
   @override
   void dispose() {
-   
     super.dispose();
   }
 
@@ -36,9 +30,9 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('All Assets'),
+        title: const Text('All Assets'),
       ),
-      drawer: SideBar(),
+      drawer: const SideBar(),
       body: StateBuilder(
         controller: AssetsController.getInstance(),
         builder: (context, assets) {
@@ -144,7 +138,7 @@ class SideBar extends StatelessWidget {
             title: const Text('Assets'),
             onTap: () {
               // Add functionality for Item 1
-              AppRoute.push(context,  Home());
+              AppRoute.push(context, const AssetList());
               //  Navigator.pop(context); // Close the drawer after selecting an item
             },
           ),
@@ -152,7 +146,7 @@ class SideBar extends StatelessWidget {
             title: const Text('IT'),
             onTap: () {
               // Add functionality for Item 2
-               AppRoute.push(context,  Dashboard());
+              AppRoute.push(context, const Dashboard());
               //  Navigator.pop(context);
             },
           ),
