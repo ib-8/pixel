@@ -3,18 +3,16 @@ import 'package:super_pixel/controller/requester_controller.dart';
 import 'package:super_pixel/ui/state_builder.dart';
 import 'package:super_pixel/ui/widget/app_text.dart';
 
-class RequesterList extends StatefulWidget {
-  const RequesterList({super.key});
+class RequestsList extends StatefulWidget {
+  const RequestsList({super.key});
 
   @override
-  State<RequesterList> createState() => _RequesterListState();
+  State<RequestsList> createState() => _RequestsListState();
 }
 
-class _RequesterListState extends State<RequesterList> {
-   
+class _RequestsListState extends State<RequestsList> {
   @override
   void initState() {
-   
     super.initState();
   }
 
@@ -27,7 +25,7 @@ class _RequesterListState extends State<RequesterList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Requester List'),
+        title: const Text('All Requests'),
       ),
       body: StateBuilder(
         controller: RequesterController.getInstance(),
@@ -40,7 +38,7 @@ class _RequesterListState extends State<RequesterList> {
               var requester = requesters[index];
               return GestureDetector(
                 onTap: () {
-                //  AppRoute.push(context, EmployeeDetail(employeeName: requester.name));
+                  //  AppRoute.push(context, EmployeeDetail(employeeName: requester.name));
                 },
                 child: Card(
                   margin:

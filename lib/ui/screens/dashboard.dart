@@ -7,6 +7,7 @@ import 'package:super_pixel/ui/routes/app_route.dart';
 import 'package:super_pixel/ui/screens/asset_detail.dart';
 import 'package:super_pixel/ui/widget/app_sheet.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:super_pixel/ui/widget/app_text.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -30,7 +31,7 @@ class _DashboardState extends State<Dashboard> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('IT Assets'),
+        title: const Text('Dashboard'),
       ),
       body: StateBuilder(
         controller: AssetsController.getInstance(),
@@ -40,126 +41,109 @@ class _DashboardState extends State<Dashboard> {
           Map<String, Map<String, dynamic>> warrantyCount =
               countWarrantyStatus(assets);
 
-          return Wrap(
-            spacing: 16.0,
-            runSpacing: 16.0,
-            children: [
-              // Display status counts
-              ...groupedData.entries.map((entry) {
-                String type = entry.key;
-                List<Asset> typeData = entry.value;
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
+            child: Wrap(
+              crossAxisAlignment: WrapCrossAlignment.center,
+              alignment: WrapAlignment.center,
+              spacing: 16.0,
+              runSpacing: 16.0,
+              children: [
+                // Display status counts
+                ...groupedData.entries.map((entry) {
+                  String type = entry.key;
+                  List<Asset> typeData = entry.value;
 
-                Map<String, Map<String, dynamic>> statusCount =
-                    countStatus(typeData);
-                int itemCount = typeData.length;
+                  Map<String, Map<String, dynamic>> statusCount =
+                      countStatus(typeData);
+                  int itemCount = typeData.length;
 
-                return Container(
-                  width: MediaQuery.of(context).size.width * 0.3,
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Colors.blue,
-                      width: 2.0,
-                    ),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text('$type ($itemCount)'),
-                      ),
-                      ...statusCount.entries.map((statusEntry) {
-                        String status = statusEntry.key;
-                        Map<String, dynamic> idMap = statusEntry.value;
-
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: GestureDetector(
-                            onTap: () {
-                              // Handle tap, e.g., display asset details
-                              if (idMap['count'] != 0) {
-                                List<int> ids = idMap['ids'] ?? [];
-                                showAssetDetailsDialog(context, ids, assets);
-                              }
-                            },
-                            child: Text('$status: ${idMap['count'] ?? 0}'),
+                  return Card(
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * 0.2,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Center(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: AppText(
+                                '$type ($itemCount)',
+                                weight: FontWeight.bold,
+                              ),
+                            ),
                           ),
-                        );
-                      }).toList(),
-                    ],
-                  ),
-                );
-              }).toList(),
+                          ...statusCount.entries.map((statusEntry) {
+                            String status = statusEntry.key;
+                            Map<String, dynamic> idMap = statusEntry.value;
 
-              // Display warranty status count in a separate card
-              Container(
-                width: MediaQuery.of(context).size.width * 0.3,
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.blue,
-                    width: 2.0,
-                  ),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text('Warranty Status'),
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 20.0, vertical: 10),
+                              child: GestureDetector(
+                                onTap: () {
+                                  // Handle tap, e.g., display asset details
+                                  if (idMap['count'] != 0) {
+                                    List<int> ids = idMap['ids'] ?? [];
+                                    showAssetDetailsDialog(
+                                        context, ids, assets);
+                                  }
+                                },
+                                child: Text('$status: ${idMap['count'] ?? 0}'),
+                              ),
+                            );
+                          }).toList(),
+                        ],
+                      ),
                     ),
-                    ...warrantyCount.entries.map((warrantyStatusEntry) {
-                      String warrantyStatus = warrantyStatusEntry.key;
-                      Map<String, dynamic> warrantyIdMap =
-                          warrantyStatusEntry.value;
+                  );
+                }).toList(),
 
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: GestureDetector(
-                          onTap: () {
-                            // Handle tap, e.g., display asset details
-                            if (warrantyIdMap['count'] != 0) {
-                              List<int> ids = warrantyIdMap['ids'] ?? [];
-                              showAssetDetailsDialog(context, ids, assets);
-                            }
-                          },
-                          child: Text(
-                              '$warrantyStatus: ${warrantyIdMap['count'] ?? 0}'),
-                        ),
-                      );
-                    }).toList(),
-                  ],
-                ),
-              ),
-            ],
+                // Display warranty status count in a separate card
+                // Card(
+                //   child: Container(
+                //     width: MediaQuery.of(context).size.width * 0.3,
+                //     child: Padding(
+                //       padding: const EdgeInsets.symmetric(
+                //           horizontal: 20.0, vertical: 20),
+                //       child: Column(
+                //         crossAxisAlignment: CrossAxisAlignment.start,
+                //         children: [
+                //           const Padding(
+                //             padding: EdgeInsets.all(8.0),
+                //             child: Text('Warranty Status'),
+                //           ),
+                //           ...warrantyCount.entries.map((warrantyStatusEntry) {
+                //             String warrantyStatus = warrantyStatusEntry.key;
+                //             Map<String, dynamic> warrantyIdMap =
+                //                 warrantyStatusEntry.value;
+
+                //             return Padding(
+                //               padding: const EdgeInsets.all(8.0),
+                //               child: GestureDetector(
+                //                 onTap: () {
+                //                   // Handle tap, e.g., display asset details
+                //                   if (warrantyIdMap['count'] != 0) {
+                //                     List<int> ids = warrantyIdMap['ids'] ?? [];
+                //                     showAssetDetailsDialog(
+                //                         context, ids, assets);
+                //                   }
+                //                 },
+                //                 child: Text(
+                //                     '$warrantyStatus: ${warrantyIdMap['count'] ?? 0}'),
+                //               ),
+                //             );
+                //           }).toList(),
+                //         ],
+                //       ),
+                //     ),
+                //   ),
+                // ),
+              ],
+            ),
           );
         },
       ),
-      floatingActionButton: FloatingActionButton(onPressed: () {
-        AppSheet.show(
-            context: context,
-            builder: (context) {
-              return DraggableScrollableSheet(
-                initialChildSize: 0.8,
-                maxChildSize: 0.8,
-                minChildSize: 0.8,
-                expand: false,
-                builder: (context, scrollController) {
-                  return MobileScanner(
-                    onDetect: (barcodes) {
-                      HapticFeedback.heavyImpact();
-                      // print('barcode is ${barcodes.barcodes.first.rawValue}');
-                      if (barcodes.barcodes.first.rawValue != null) {
-                        var segments =
-                            barcodes.barcodes.first.rawValue!.split('/');
-                        AppRoute.push(
-                            context, AssetDetail(assetId: segments.last));
-                      }
-                    },
-                  );
-                },
-              );
-            });
-      }),
     );
   }
 
