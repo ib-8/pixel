@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:super_pixel/controller/employees_controller.dart';
+import 'package:super_pixel/model/employee.dart';
 import 'package:super_pixel/ui/routes/app_route.dart';
 import 'package:super_pixel/ui/sheets/association_type_sheet.dart';
 import 'package:super_pixel/ui/state_builder.dart';
@@ -20,8 +21,8 @@ class _EmployeeSelectionSheetState extends State<EmployeeSelectionSheet> {
 
   TextEditingController _noteController = TextEditingController();
 
-  onSelect(String employeeName) {
-    AppRoute.pop(context, type);
+  onSelect(Employee employee) {
+    AppRoute.pop(context, employee);
   }
 
   @override
@@ -55,9 +56,7 @@ class _EmployeeSelectionSheetState extends State<EmployeeSelectionSheet> {
 
                         return FormTile(
                           lable: employee.name,
-                          onTap: () => onSelect(
-                            employee.name,
-                          ),
+                          onTap: () => onSelect(employee),
                         );
                       },
                     )

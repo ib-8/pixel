@@ -14,8 +14,11 @@ class AssetDetailController extends ValueNotifier<AssetDetailState> {
   final String assetId;
 
   static var instance = DependencyInjector.instance<AssetDetailController>();
-  static AssetDetailController getInstance() {
-    return DependencyInjector.instance<AssetDetailController>();
+  static AssetDetailController getInstance(assetId) {
+    // return DependencyInjector.instance<AssetDetailController>();
+
+    return DependencyInjector.instance
+        .get<AssetDetailController>(instanceName: assetId);
   }
 
   static init(assetId) {
@@ -50,8 +53,9 @@ class AssetDetailController extends ValueNotifier<AssetDetailState> {
     print('all response is $response');
   }
 
-  associate({required String owner, Asset? oldAsset}) async {
-    var asset = value.asset!
+  associate(
+      {required String owner, required Asset newAsset, Asset? oldAsset}) async {
+    var asset = newAsset
       ..status = AssetStatus.inUse
       ..owner = owner;
 
@@ -67,7 +71,8 @@ class AssetDetailController extends ValueNotifier<AssetDetailState> {
   }
 
   static close(assetId) {
-    DependencyInjector.instance.unregister<AssetDetailController>(instanceName:assetId );
+    DependencyInjector.instance
+        .unregister<AssetDetailController>(instanceName: assetId);
   }
 }
 

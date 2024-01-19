@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:super_pixel/controller/assets_controller.dart';
 import 'package:super_pixel/controller/employees_controller.dart';
+import 'package:super_pixel/ui/routes/app_route.dart';
 import 'package:super_pixel/ui/screens/asset_detail.dart';
 import 'package:super_pixel/ui/screens/dashboard.dart';
 import 'package:super_pixel/ui/screens/employee_list.dart';
 import 'package:super_pixel/ui/screens/asset_list.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
+import 'package:super_pixel/ui/widget/app_sheet.dart';
 import 'package:super_pixel/ui/widget/app_text.dart';
+import 'package:super_pixel/ui/widget/asset_scanner.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -175,6 +178,21 @@ class _HomeState extends State<Home> {
             ),
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        heroTag: '',
+        onPressed: () {
+          AppSheet.show(
+              context: context,
+              builder: (context) {
+                return AssetScanner(onTap: (asset) {
+                  AppRoute.push(
+                    context,
+                    AssetDetail(assetId: asset.id),
+                  );
+                });
+              });
+        },
       ),
     );
   }

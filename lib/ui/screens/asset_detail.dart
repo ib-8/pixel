@@ -6,14 +6,6 @@ import 'package:super_pixel/ui/state_builder.dart';
 import 'package:super_pixel/ui/widget/app_sheet.dart';
 import 'package:super_pixel/ui/widget/app_text.dart';
 
-class AssetDetail extends StatefulWidget {
-  const AssetDetail({required this.assetId, super.key});
-
-  final String assetId;
-  @override
-  State<AssetDetail> createState() => _AssetDetailState();
-}
-
 class AssetDetailsPage extends StatelessWidget {
   final List<List<String>> rowsData;
 
@@ -23,7 +15,7 @@ class AssetDetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Asset Details'),
+        title: Text('Asset Details>>'),
       ),
       body: ListView.builder(
         itemCount: rowsData.length,
@@ -51,6 +43,14 @@ class AssetDetailsPage extends StatelessWidget {
   }
 }
 
+class AssetDetail extends StatefulWidget {
+  const AssetDetail({required this.assetId, super.key});
+
+  final String assetId;
+  @override
+  State<AssetDetail> createState() => _AssetDetailState();
+}
+
 class _AssetDetailState extends State<AssetDetail>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
@@ -64,7 +64,7 @@ class _AssetDetailState extends State<AssetDetail>
 
   @override
   void dispose() {
-   AssetDetailController.close(widget.assetId);
+    AssetDetailController.close(widget.assetId);
     super.dispose();
   }
 
@@ -150,7 +150,10 @@ class _AssetDetailState extends State<AssetDetail>
                 Expanded(
                   child: TabBarView(
                     controller: _tabController,
-                    children: const [FlutterLogo(), AppText('data')],
+                    children: const [
+                      FlutterLogo(),
+                      AppText('data'),
+                    ],
                   ),
                 )
               ],
@@ -158,10 +161,11 @@ class _AssetDetailState extends State<AssetDetail>
           ),
           floatingActionButton: FloatingActionButton(onPressed: () {
             AppSheet.show(
-                context: context,
-                builder: (context) {
-                  return AssociationForm();
-                });
+              context: context,
+              builder: (context) {
+                return AssociationForm(assetId: data.asset!.id);
+              },
+            );
           }),
         );
       },

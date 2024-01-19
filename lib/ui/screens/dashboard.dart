@@ -92,32 +92,6 @@ class _DashboardState extends State<Dashboard> {
           );
         },
       ),
-      floatingActionButton: FloatingActionButton(onPressed: () {
-        AppSheet.show(
-            context: context,
-            builder: (context) {
-              return DraggableScrollableSheet(
-                initialChildSize: 0.8,
-                maxChildSize: 0.8,
-                minChildSize: 0.8,
-                expand: false,
-                builder: (context, scrollController) {
-                  return MobileScanner(
-                    onDetect: (barcodes) {
-                      HapticFeedback.heavyImpact();
-                      // print('barcode is ${barcodes.barcodes.first.rawValue}');
-                      if (barcodes.barcodes.first.rawValue != null) {
-                        var segments =
-                            barcodes.barcodes.first.rawValue!.split('/');
-                        AppRoute.push(
-                            context, AssetDetail(assetId: segments.last));
-                      }
-                    },
-                  );
-                },
-              );
-            });
-      }),
     );
   }
 
