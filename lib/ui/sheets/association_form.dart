@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:super_pixel/controller/asset_detail_controller.dart';
+import 'package:super_pixel/controller/assets_controller.dart';
 import 'package:super_pixel/model/asset.dart';
+import 'package:super_pixel/model/employee.dart';
 import 'package:super_pixel/ui/sheets/association_type_sheet.dart';
 import 'package:super_pixel/ui/sheets/employee_sheet.dart';
 import 'package:super_pixel/ui/widget/app_sheet.dart';
@@ -9,7 +11,9 @@ import 'package:super_pixel/ui/widget/asset_scanner.dart';
 import 'package:super_pixel/utils/association_type.dart';
 
 class AssociationForm extends StatefulWidget {
-  const AssociationForm({super.key});
+  const AssociationForm({required this.assetId, super.key});
+
+  final String assetId;
 
   @override
   State<AssociationForm> createState() => _AssociationFormState();
@@ -49,7 +53,7 @@ class _AssociationFormState extends State<AssociationForm> {
                   var _type = await AppSheet.show<String>(
                     context: context,
                     builder: (context) {
-                      return AssociationTypeSheet();
+                      return const AssociationTypeSheet();
                     },
                   );
 
@@ -83,13 +87,7 @@ class _AssociationFormState extends State<AssociationForm> {
                       lable: 'Scan Old Asset',
                     ),
                     FormTile(
-                      onTap: () {
-                        AppSheet.show(
-                            context: context,
-                            builder: (context) {
-                              return EmployeeSelectionSheet();
-                            });
-                      },
+                      onTap: () async {},
                       lable: employee ?? 'Employee',
                     ),
                   ],
@@ -97,11 +95,17 @@ class _AssociationFormState extends State<AssociationForm> {
               if (type != AssociationType.replacement)
                 FormDropDown(
                   value: employee ?? 'Employee',
-                  onTap: () {
-                    AppSheet.show(
+                  onTap: () async {
+                    Employee _employee = await AppSheet.show<Employee>(
                       context: context,
-                      builder: ((context) => EmployeeSelectionSheet()),
+                      builder: (context) {
+                        return const EmployeeSelectionSheet();
+                      },
                     );
+
+                    setState(() {
+                      employee = _employee.name;
+                    });
                   },
                 ),
               const Card(
@@ -116,13 +120,19 @@ class _AssociationFormState extends State<AssociationForm> {
                   ),
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               AppButton(
                 lable: 'Associate',
                 onTap: () {
                   if (employee != null && type != null) {
-                    AssetDetailController.getInstance()
-                        .associate(owner: employee!, oldAsset: oldAsset);
+                    var asset = AssetsController.instance.value
+                        .firstWhere((element) => element.id == widget.assetId);
+
+                    AssetDetailController.getInstance(widget.assetId).associate(
+                      owner: employee!,
+                      newAsset: asset,
+                      oldAsset: oldAsset,
+                    );
                   }
                 },
               ),
@@ -143,10 +153,10 @@ class AppButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialButton(
-      padding: EdgeInsets.symmetric(vertical: 15),
+      padding: const EdgeInsets.symmetric(vertical: 15),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       onPressed: onTap,
-      color: Color.fromARGB(255, 77, 56, 81),
+      color: const Color.fromARGB(255, 77, 56, 81),
       child: AppText(
         lable,
         color: Colors.white,

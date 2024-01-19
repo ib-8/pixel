@@ -83,31 +83,6 @@ class _AssetListState extends State<AssetList> {
           );
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          AppSheet.show(
-            context: context,
-            builder: (context) {
-              return DraggableScrollableSheet(
-                initialChildSize: 0.8,
-                maxChildSize: 0.8,
-                minChildSize: 0.8,
-                expand: false,
-                builder: (context, scrollController) {
-                  return AssetScanner(
-                    onTap: (asset) {
-                      AppRoute.push(
-                        context,
-                        AssetDetail(assetId: asset.id),
-                      );
-                    },
-                  );
-                },
-              );
-            },
-          );
-        },
-      ),
     );
   }
 }

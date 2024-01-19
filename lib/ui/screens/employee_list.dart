@@ -19,13 +19,11 @@ class EmployeeList extends StatefulWidget {
 class _EmployeeListState extends State<EmployeeList> {
   @override
   void initState() {
-
     super.initState();
   }
 
   @override
   void dispose() {
-  
     super.dispose();
   }
 
@@ -46,7 +44,8 @@ class _EmployeeListState extends State<EmployeeList> {
               var employee = employees[index];
               return GestureDetector(
                 onTap: () {
-                  AppRoute.push(context, EmployeeDetail(employeeName: employee.name));
+                  AppRoute.push(
+                      context, EmployeeDetail(employeeName: employee.name));
                 },
                 child: Card(
                   margin:
@@ -70,32 +69,6 @@ class _EmployeeListState extends State<EmployeeList> {
           );
         },
       ),
-      floatingActionButton: FloatingActionButton(onPressed: () {
-        AppSheet.show(
-            context: context,
-            builder: (context) {
-              return DraggableScrollableSheet(
-                initialChildSize: 0.8,
-                maxChildSize: 0.8,
-                minChildSize: 0.8,
-                expand: false,
-                builder: (context, scrollController) {
-                  return MobileScanner(
-                    onDetect: (barcodes) {
-                      HapticFeedback.heavyImpact();
-                      print('barcode is ${barcodes.barcodes.first.rawValue}');
-                      if (barcodes.barcodes.first.rawValue != null) {
-                        var segments =
-                            barcodes.barcodes.first.rawValue!.split('/');
-                        AppRoute.push(
-                            context, AssetDetail(assetId: segments.last));
-                      }
-                    },
-                  );
-                },
-              );
-            });
-      }),
     );
   }
 }
