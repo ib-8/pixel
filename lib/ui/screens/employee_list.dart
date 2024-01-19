@@ -19,13 +19,13 @@ class EmployeeList extends StatefulWidget {
 class _EmployeeListState extends State<EmployeeList> {
   @override
   void initState() {
-    EmployeesController.init();
+
     super.initState();
   }
 
   @override
   void dispose() {
-    EmployeesController.close();
+   
     super.dispose();
   }
 
