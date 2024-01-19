@@ -27,7 +27,7 @@ class AssetsController extends ValueNotifier<List<Asset>> {
 
     value = response.map((e) => Asset.from(e)).toList();
 
-    print('all response is $response');
+    // print('all response is $response');
   }
 
   static close() {
