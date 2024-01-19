@@ -3,6 +3,7 @@ import 'package:super_pixel/database_table.dart';
 import 'package:super_pixel/di.dart';
 import 'package:super_pixel/model/asset.dart';
 import 'package:super_pixel/model/event.dart';
+import 'package:super_pixel/utils/asset_status.dart';
 
 class AssetDetailController extends ValueNotifier<AssetDetailState> {
   AssetDetailController(this.assetId) : super(AssetDetailState()) {
@@ -49,8 +50,20 @@ class AssetDetailController extends ValueNotifier<AssetDetailState> {
     print('all response is $response');
   }
 
-  associate() async {
-    // var response = await DatabaseTable.assets.update(values);
+  associate({required String owner, Asset? oldAsset}) async {
+    var asset = value.asset!
+      ..status = AssetStatus.inUse
+      ..owner = owner;
+
+    var response = await DatabaseTable.assets.update(asset.toMap());
+
+    if (oldAsset != null) {
+      var oldAsset = value.asset!
+        ..status = AssetStatus.inStock
+        ..owner = '';
+
+      var response = await DatabaseTable.assets.update(oldAsset.toMap());
+    }
   }
 
   static close() {

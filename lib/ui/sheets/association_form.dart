@@ -1,13 +1,12 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:super_pixel/controller/asset_detail_controller.dart';
+import 'package:super_pixel/model/asset.dart';
 import 'package:super_pixel/ui/sheets/association_type_sheet.dart';
 import 'package:super_pixel/ui/sheets/employee_sheet.dart';
 import 'package:super_pixel/ui/widget/app_sheet.dart';
 import 'package:super_pixel/ui/widget/app_text.dart';
 import 'package:super_pixel/ui/widget/asset_scanner.dart';
 import 'package:super_pixel/utils/association_type.dart';
-import 'package:super_pixel/ui/sheets/association_type_sheet.dart';
 
 class AssociationForm extends StatefulWidget {
   const AssociationForm({super.key});
@@ -20,7 +19,7 @@ class _AssociationFormState extends State<AssociationForm> {
   String? type;
   String? employee;
   String? notes;
-  String? oldAsset;
+  Asset? oldAsset;
 
   TextEditingController _noteController = TextEditingController();
 
@@ -73,7 +72,7 @@ class _AssociationFormState extends State<AssociationForm> {
                             return AssetScanner(
                               onTap: (asset) {
                                 setState(() {
-                                  oldAsset = asset.model;
+                                  oldAsset = asset;
                                   employee = asset.owner;
                                 });
                               },
@@ -120,7 +119,12 @@ class _AssociationFormState extends State<AssociationForm> {
               SizedBox(height: 10),
               AppButton(
                 lable: 'Associate',
-                onTap: () {},
+                onTap: () {
+                  if (employee != null && type != null) {
+                    AssetDetailController.getInstance()
+                        .associate(owner: employee!, oldAsset: oldAsset);
+                  }
+                },
               ),
             ],
           ),
