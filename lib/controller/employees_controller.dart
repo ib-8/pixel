@@ -30,7 +30,7 @@ class EmployeesController extends ValueNotifier<List<Employee>> {
     var response = await DatabaseTable.employees.select();
     print('response employee $response');
     value = response.map((e) => Employee.from(e)).toList();
-    print('all response is $response');
+    // print('all response is $response');
   }
 
   static close() {

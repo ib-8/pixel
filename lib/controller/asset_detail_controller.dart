@@ -42,15 +42,15 @@ class AssetDetailController extends ValueNotifier<AssetDetailState> {
       value = value.copyWith(asset: Asset.from(response));
     }
 
-    print('all response is-------- $response');
+    // print('all response is-------- $response');
   }
 
   getAllEvents() async {
-    var response = await DatabaseTable.assets.select().eq('assetId', assetId);
+    var response = await DatabaseTable.assets.select().eq('id', assetId);
 
     value = value.copyWith(events: response.map((e) => Event.from(e)).toList());
 
-    print('all response is $response');
+    // print('all response is $response');
   }
 
   associate(

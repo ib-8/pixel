@@ -3,12 +3,14 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:super_pixel/controller/assets_controller.dart';
 import 'package:super_pixel/controller/employees_controller.dart';
 import 'package:super_pixel/ui/routes/app_route.dart';
+import 'package:super_pixel/controller/requester_controller.dart';
 import 'package:super_pixel/ui/screens/asset_detail.dart';
 import 'package:super_pixel/ui/screens/dashboard.dart';
 import 'package:super_pixel/ui/screens/employee_list.dart';
 import 'package:super_pixel/ui/screens/asset_list.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:super_pixel/ui/widget/app_sheet.dart';
+import 'package:super_pixel/ui/screens/requester_list.dart';
 import 'package:super_pixel/ui/widget/app_text.dart';
 import 'package:super_pixel/ui/widget/asset_scanner.dart';
 
@@ -36,6 +38,7 @@ class _AppState extends State<App> {
   void initState() {
     AssetsController.init();
     EmployeesController.init();
+    RequesterController.init();
     super.initState();
   }
 
@@ -106,6 +109,11 @@ class _AppState extends State<App> {
 // Warranty Increase
 // Insurance
 
+// Requester Type
+// New
+// service
+// Replacement
+
 class Home extends StatefulWidget {
   const Home({super.key});
 
@@ -150,7 +158,7 @@ class _HomeState extends State<Home> {
                   ),
                   HomeCard(
                     lable: 'Requesters',
-                    onTap: () => onTabChange(2),
+                    onTap: () => onTabChange(3),
                   ),
                   HomeCard(
                     lable: 'Expenses',
@@ -171,6 +179,8 @@ class _HomeState extends State<Home> {
                     return const AssetList();
                   case 2:
                     return const EmployeeList();
+                  case 3:
+                    return const RequesterList();
                   default:
                     return const Dashboard();
                 }

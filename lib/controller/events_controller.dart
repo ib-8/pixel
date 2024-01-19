@@ -27,7 +27,7 @@ class EventsController extends ValueNotifier<List<Event>> {
 
     value = response.map((e) => Event.from(e)).toList();
 
-    print('all response is $response');
+    // print('all response is $response');
   }
 
   static close() {

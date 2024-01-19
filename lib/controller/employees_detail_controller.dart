@@ -28,7 +28,7 @@ class EmployeeDetailController extends ValueNotifier<EmployeeState> {
     var assetDetailResponse =
         await DatabaseTable.assets.select().eq('owner', employeeName);
     var response = assetDetailResponse.map((e) => Asset.from(e)).toList();
-    print('all response is $response');
+    // print('all response is $response');
     value = value.copyWith(assets: response);
     print('value is  $value');
   }
