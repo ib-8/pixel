@@ -169,7 +169,7 @@ class _HomeState extends State<Home> {
                   case 2:
                     return const EmployeeList();
                   default:
-                    return const Home();
+                    return const Dashboard();
                 }
               },
             ),

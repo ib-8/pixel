@@ -7,7 +7,6 @@ import 'package:super_pixel/ui/routes/app_route.dart';
 import 'package:super_pixel/ui/screens/asset_detail.dart';
 import 'package:super_pixel/ui/widget/app_sheet.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
-import 'package:super_pixel/ui/screens/asset_list.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -33,7 +32,6 @@ class _DashboardState extends State<Dashboard> {
       appBar: AppBar(
         title: const Text('IT Assets'),
       ),
-      drawer: const SideBar(),
       body: StateBuilder(
   controller: AssetsController.getInstance(),
   builder: (context, assets) {
@@ -222,7 +220,7 @@ class _DashboardState extends State<Dashboard> {
     for (int id in ids) {
       Asset? asset = assets.firstWhere(
         (asset) => int.tryParse(asset.id) == id,
-       
+        
       );
 
       if (asset.id.isNotEmpty) {
