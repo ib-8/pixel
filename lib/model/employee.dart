@@ -5,6 +5,7 @@ class Employee {
     required this.name,
     required this.reportingTo,
   });
+
   String id;
   String employeeId;
   String name;
