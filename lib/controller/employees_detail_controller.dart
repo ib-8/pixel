@@ -18,48 +18,37 @@ class EmployeeDetailController extends ValueNotifier<EmployeeState> {
 
   static init(employeeId) {
     try {
-      DependencyInjector.instance.registerLazySingleton<EmployeeDetailController>(
-        () => EmployeeDetailController(employeeId),
-        instanceName: employeeId,
-      );
+      DependencyInjector.instance.registerLazySingleton<EmployeeDetailController>(() => EmployeeDetailController(employeeId),instanceName: employeeId,);
     } catch (e) {
       print('error is $e');
     }
-
   }
 
-getAssets() async {
-  var assetDetailResponse = await DatabaseTable.assets.select().eq('owner', employeeName);
-     var  response = assetDetailResponse.map((e) => Asset.from(e)).toList();
-     print('all response is $response');
-     value= value.copyWith(assets: response); 
-     print('value is  $value');
-}
+  getAssets() async {
+    var assetDetailResponse =
+        await DatabaseTable.assets.select().eq('owner', employeeName);
+    var response = assetDetailResponse.map((e) => Asset.from(e)).toList();
+    print('all response is $response');
+    value = value.copyWith(assets: response);
+    print('value is  $value');
+  }
 
-  static close() {
-    DependencyInjector.instance.unregister<EmployeeDetailController>();
+  static close(employeeId) {
+    DependencyInjector.instance.unregister<EmployeeDetailController>(instanceName: employeeId);
   }
 }
 
-
-class EmployeeState{
-
-  EmployeeState({this.employee,this.assets=const[]});
-
+class EmployeeState {
+  EmployeeState({this.employee, this.assets = const []});
 
   Employee? employee;
   List<Asset> assets;
 
-  EmployeeState copyWith(
-    { Employee? employee,
-  List<Asset>? assets,}
-  ){
-
+  EmployeeState copyWith({
+    Employee? employee,
+    List<Asset>? assets,
+  }) {
     return EmployeeState(
-      employee: employee??this.employee,
-      assets: assets??this.assets
-    );
-   
-
+        employee: employee ?? this.employee, assets: assets ?? this.assets);
   }
 }

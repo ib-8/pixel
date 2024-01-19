@@ -7,6 +7,8 @@ class Asset {
     required this.owner,
     required this.serialNumber,
     required this.status,
+    required this.ownerShip,
+    required this.warrantyEndDate,
   });
 
   String id;
@@ -16,6 +18,8 @@ class Asset {
   String owner;
   String serialNumber;
   String status;
+  String ownerShip;
+  String warrantyEndDate;
 
   factory Asset.from(Map<String, dynamic> data) {
     return Asset(
@@ -26,6 +30,8 @@ class Asset {
       owner: data['owner'] ?? '',
       serialNumber: data['serialNumber'] ?? '',
       status: data['status'],
+      ownerShip: data['ownerShip'] ?? '',
+      warrantyEndDate: data['warrantyEndDate'] ?? ''
     );
   }
 
@@ -38,6 +44,8 @@ class Asset {
       'owner': owner,
       'serialNumber': serialNumber,
       'status': status,
+      'ownerShip':ownerShip,
+      'warrantyEndDate':warrantyEndDate
     };
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:pretty_qr_code/pretty_qr_code.dart';
 import 'package:super_pixel/controller/employees_detail_controller.dart';
+import 'package:super_pixel/ui/routes/app_route.dart';
+import 'package:super_pixel/ui/screens/asset_detail.dart';
 import 'package:super_pixel/ui/state_builder.dart';
 import 'package:super_pixel/ui/widget/app_text.dart';
 
@@ -22,6 +23,12 @@ class _EmployeeDetailState extends State<EmployeeDetail>
     EmployeeDetailController.init(widget.employeeName);
     _tabController = TabController(length: 2, vsync: this);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+   EmployeeDetailController.close(widget.employeeName);
+    super.dispose();
   }
 
   @override
@@ -49,20 +56,26 @@ class _EmployeeDetailState extends State<EmployeeDetail>
             body: Center(
               child:  DataTable(
             columns: [
+              DataColumn(label: Text('Model')),
               DataColumn(label: Text('serial number')),
               DataColumn(label: Text('Status')),
               DataColumn(label: Text('Type')),
-              DataColumn(label: Text('Model'))
+              DataColumn(label: Text('OwnerShip')),
+              DataColumn(label: Text('WarrantyEndDate'))
             ],
             rows:
             assets.map((e) => DataRow(cells:[
-                     DataCell(Text(e.serialNumber)),
+               DataCell(GestureDetector(
+                  onTap: () {
+                    AppRoute.push(context, AssetDetail(assetId: e.id));
+                  },
+                child: Text(e.model),),),
+                DataCell(Text(e.serialNumber)),
                 DataCell(Text(e.status)),
                 DataCell(Text(e.type)),
-                 DataCell(Text(e.model))
-
+                DataCell(Text(e.ownerShip)),
+                DataCell(Text(e.warrantyEndDate))
             ] )).toList(),
-          
           ),
           ),
           );
