@@ -7,7 +7,8 @@ class Asset {
     required this.owner,
     required this.serialNumber,
     required this.status,
-    required this.ownership,
+    required this.ownerShip,
+    required this.warrantyEndDate,
   });
 
   String id;
@@ -17,19 +18,20 @@ class Asset {
   String owner;
   String serialNumber;
   String status;
-  String ownership;
+  String ownerShip;
+  String warrantyEndDate;
 
   factory Asset.from(Map<String, dynamic> data) {
     return Asset(
-      id: data['id'].toString(),
-      assetId: data['assetId'],
-      type: data['type'],
-      model: data['model'],
-      owner: data['owner'] ?? '',
-      serialNumber: data['serialNumber'] ?? '',
-      status: data['status'],
-      ownership: data['ownership'],
-    );
+        id: data['id'].toString(),
+        assetId: data['assetId'],
+        type: data['type'],
+        model: data['model'],
+        owner: data['owner'] ?? '',
+        serialNumber: data['serialNumber'] ?? '',
+        status: data['status'],
+        ownerShip: data['ownerShip'] ?? '',
+        warrantyEndDate: data['warrantyEndDate'] ?? '');
   }
 
   Map toMap() {
@@ -41,6 +43,8 @@ class Asset {
       'owner': owner,
       'serialNumber': serialNumber,
       'status': status,
+      'ownerShip': ownerShip,
+      'warrantyEndDate': warrantyEndDate
     };
   }
 }
