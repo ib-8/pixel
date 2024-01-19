@@ -14,7 +14,7 @@ class _RequesterListState extends State<RequesterList> {
    
   @override
   void initState() {
-    RequesterController.init();
+   
     super.initState();
   }
 

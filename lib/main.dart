@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:super_pixel/controller/assets_controller.dart';
 import 'package:super_pixel/controller/employees_controller.dart';
+import 'package:super_pixel/controller/requester_controller.dart';
 import 'package:super_pixel/ui/screens/asset_detail.dart';
 import 'package:super_pixel/ui/screens/dashboard.dart';
 import 'package:super_pixel/ui/screens/employee_list.dart';
@@ -34,6 +35,7 @@ class _AppState extends State<App> {
   void initState() {
     AssetsController.init();
     EmployeesController.init();
+     RequesterController.init();
     super.initState();
   }
 

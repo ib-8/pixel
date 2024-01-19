@@ -3,19 +3,19 @@ class Event {
     required this.id,
     required this.assetId,
      this.expense,
-    required this.note,
+     this.note,
     required this.type,
-    required this.user,
-    required this.vendor,
+     this.user,
+     this.vendor,
   });
 
   String id;
   String assetId;
   String type;
-  String user;
+  String? user;
   String? expense;
-  String note;
-  String vendor;
+  String? note;
+  String? vendor;
 
   factory Event.from(Map data) {
     return Event(
