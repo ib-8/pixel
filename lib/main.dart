@@ -104,7 +104,7 @@ class _AppState extends State<App> {
 // Warranty Increase
 // Insurance
 
-// Requester Type
+// Requests Type
 // New
 // service
 // Replacement 

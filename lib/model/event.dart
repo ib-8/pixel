@@ -5,14 +5,14 @@ class Event {
      this.expense,
     required this.note,
     required this.type,
-    required this.user,
+    required this.employee,
     required this.vendor,
   });
 
   String id;
   String assetId;
   String type;
-  String user;
+  String employee;
   String? expense;
   String note;
   String vendor;
@@ -22,10 +22,10 @@ class Event {
       id: data['id'].toString(),
       assetId: data['assetId'].toString(),
       expense: data['expense'],
-      note: data['note'],
+      note: data['note'] ?? '',
       type: data['type'],
-      user: data['user'],
-      vendor: data['vendor'],
+      employee: data['employee'] ?? '',
+      vendor: data['vendor'] ?? '',
     );
   }
 
@@ -35,7 +35,7 @@ class Event {
       'expense': expense,
       'note': note,
       'type': type,
-      'user': user,
+      'employee': employee,
       'vendor': vendor,
     };
   }
