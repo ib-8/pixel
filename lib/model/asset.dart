@@ -24,7 +24,7 @@ class Asset {
   factory Asset.from(Map<String, dynamic> data) {
     return Asset(
       id: data['id'].toString(),
-      assetId: data['assetId'],
+      assetId: data['assetId'] ?? '',
       type: data['type'],
       model: data['model'],
       owner: data['owner']??'',
