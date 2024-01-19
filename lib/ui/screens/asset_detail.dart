@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:pretty_qr_code/pretty_qr_code.dart';
 import 'package:super_pixel/controller/asset_detail_controller.dart';
 import 'package:super_pixel/ui/sheets/association_form.dart';
+import 'package:super_pixel/ui/sheets/dissociation_form.dart';
 import 'package:super_pixel/ui/state_builder.dart';
 import 'package:super_pixel/ui/widget/app_sheet.dart';
 import 'package:super_pixel/ui/widget/app_text.dart';
+import 'package:super_pixel/utils/asset_status.dart';
 
 class AssetDetailsPage extends StatelessWidget {
   final List<List<String>> rowsData;
@@ -159,13 +161,28 @@ class _AssetDetailState extends State<AssetDetail>
               ],
             ),
           ),
-          floatingActionButton: FloatingActionButton(onPressed: () {
-            AppSheet.show(
-              context: context,
-              builder: (context) {
-                return AssociationForm(assetId: data.asset!.id);
-              },
-            );
+          floatingActionButton: Builder(builder: (context) {
+            if (data.asset!.status == AssetStatus.inStock ||
+                data.asset!.status == AssetStatus.inUse) {
+              return FloatingActionButton(
+                onPressed: () async {
+                  await AppSheet.show(
+                    context: context,
+                    builder: (context) {
+                      if (data.asset!.status == AssetStatus.inUse) {
+                        return DissociationForm(assetId: data.asset!.id);
+                      } else {
+                        return AssociationForm(assetId: data.asset!.id);
+                      }
+                    },
+                  );
+
+                  AssetDetailController.getInstance(widget.assetId).getDetail();
+                },
+              );
+            }
+
+            return const SizedBox();
           }),
         );
       },

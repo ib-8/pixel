@@ -3,7 +3,9 @@ import 'package:super_pixel/database_table.dart';
 import 'package:super_pixel/di.dart';
 import 'package:super_pixel/model/asset.dart';
 import 'package:super_pixel/model/event.dart';
+import 'package:super_pixel/toast.dart';
 import 'package:super_pixel/utils/asset_status.dart';
+import 'package:super_pixel/utils/event_type.dart';
 
 class AssetDetailController extends ValueNotifier<AssetDetailState> {
   AssetDetailController(this.assetId) : super(AssetDetailState()) {
@@ -53,21 +55,67 @@ class AssetDetailController extends ValueNotifier<AssetDetailState> {
     // print('all response is $response');
   }
 
-  associate(
+  Future associate(
       {required String owner, required Asset newAsset, Asset? oldAsset}) async {
+    value = value.copyWith(isUpdating: true);
     var asset = newAsset
       ..status = AssetStatus.inUse
       ..owner = owner;
 
-    var response = await DatabaseTable.assets.update(asset.toMap());
+    var response =
+        await DatabaseTable.assets.update(asset.toMap()).eq('id', asset.id);
+
+    var associationEvent = Event(
+      id: '',
+      assetId: newAsset.id,
+      type: EvenType.associated,
+      employee: owner,
+    );
+
+    await DatabaseTable.events.insert(associationEvent.toMap());
 
     if (oldAsset != null) {
       var oldAsset = value.asset!
         ..status = AssetStatus.inStock
         ..owner = '';
 
-      var response = await DatabaseTable.assets.update(oldAsset.toMap());
+      var response = await DatabaseTable.assets
+          .update(oldAsset.toMap())
+          .eq('id', oldAsset.id);
+
+      var dissociationEvent = Event(
+        id: '',
+        assetId: oldAsset.id,
+        type: EvenType.dissociated,
+        employee: owner,
+      );
+
+      await DatabaseTable.events.insert(dissociationEvent.toMap());
+      Toast.show('Associated Successfully');
     }
+  }
+
+  Future dissociate({required Asset newasset}) async {
+    value = value.copyWith(isUpdating: true);
+
+    var owner = newasset.owner;
+    var _asset = newasset
+      ..status = AssetStatus.inStock
+      ..owner = '';
+
+    var response =
+        await DatabaseTable.assets.update(_asset.toMap()).eq('id', _asset.id);
+
+    var event = Event(
+      id: '',
+      assetId: _asset.id,
+      type: EvenType.dissociated,
+      employee: owner,
+    );
+
+    await DatabaseTable.events.insert(event.toMap());
+    Toast.show('Dissociated Successfully');
+    getDetail();
   }
 
   static close(assetId) {
@@ -80,18 +128,26 @@ class AssetDetailState {
   AssetDetailState({
     this.asset,
     this.events = const [],
+    this.isLoading,
+    this.isUpdating,
   });
 
+  final bool? isLoading;
+  final bool? isUpdating;
   final Asset? asset;
   final List<Event> events;
 
   AssetDetailState copyWith({
     Asset? asset,
     List<Event>? events,
+    bool? isLoading,
+    bool? isUpdating,
   }) {
     return AssetDetailState(
       asset: asset ?? this.asset,
       events: events ?? this.events,
+      isLoading: isLoading ?? this.isLoading,
+      isUpdating: isUpdating ?? this.isUpdating,
     );
   }
 }

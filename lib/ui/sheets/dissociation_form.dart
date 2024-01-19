@@ -2,25 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:super_pixel/controller/asset_detail_controller.dart';
 import 'package:super_pixel/controller/assets_controller.dart';
 import 'package:super_pixel/model/asset.dart';
-import 'package:super_pixel/model/employee.dart';
 import 'package:super_pixel/ui/routes/app_route.dart';
-import 'package:super_pixel/ui/sheets/association_type_sheet.dart';
-import 'package:super_pixel/ui/sheets/employee_sheet.dart';
+import 'package:super_pixel/ui/sheets/dissociation_type_sheet.dart';
 import 'package:super_pixel/ui/widget/app_sheet.dart';
 import 'package:super_pixel/ui/widget/app_text.dart';
-import 'package:super_pixel/ui/widget/asset_scanner.dart';
-import 'package:super_pixel/utils/association_type.dart';
 
-class AssociationForm extends StatefulWidget {
-  const AssociationForm({required this.assetId, super.key});
+class DissociationForm extends StatefulWidget {
+  const DissociationForm({required this.assetId, super.key});
 
   final String assetId;
 
   @override
-  State<AssociationForm> createState() => _AssociationFormState();
+  State<DissociationForm> createState() => _DissociationFormState();
 }
 
-class _AssociationFormState extends State<AssociationForm> {
+class _DissociationFormState extends State<DissociationForm> {
   String? type;
   String? employee;
   String? notes;
@@ -43,7 +39,7 @@ class _AssociationFormState extends State<AssociationForm> {
             children: [
               const Center(
                 child: AppText(
-                  'Association Form',
+                  'Dissociation Form',
                   weight: FontWeight.bold,
                   size: 20,
                 ),
@@ -54,7 +50,7 @@ class _AssociationFormState extends State<AssociationForm> {
                   var _type = await AppSheet.show<String>(
                     context: context,
                     builder: (context) {
-                      return const AssociationTypeSheet();
+                      return const DissociationTypeSheet();
                     },
                   );
 
@@ -65,52 +61,6 @@ class _AssociationFormState extends State<AssociationForm> {
                   print('typre is $type');
                 },
               ),
-              if (type == AssociationType.replacement)
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    FormTile(
-                      onTap: () {
-                        AppSheet.show(
-                          context: context,
-                          builder: (builder) {
-                            return AssetScanner(
-                              onTap: (asset) {
-                                setState(() {
-                                  oldAsset = asset;
-                                  employee = asset.owner;
-                                });
-                              },
-                            );
-                          },
-                        );
-                      },
-                      lable: 'Scan Old Asset',
-                    ),
-                    FormTile(
-                      onTap: () async {},
-                      lable: employee ?? 'Employee',
-                    ),
-                  ],
-                ),
-              if (type != AssociationType.replacement)
-                FormDropDown(
-                  value: employee ?? 'Employee',
-                  onTap: () async {
-                    Employee? _employee = await AppSheet.show<Employee>(
-                      context: context,
-                      builder: (context) {
-                        return const EmployeeSelectionSheet();
-                      },
-                    );
-
-                    if (_employee != null) {
-                      setState(() {
-                        employee = _employee.name;
-                      });
-                    }
-                  },
-                ),
               const Card(
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5),
@@ -125,21 +75,19 @@ class _AssociationFormState extends State<AssociationForm> {
               ),
               const SizedBox(height: 10),
               AppButton(
-                lable: 'Associate',
+                lable: 'Dissociate',
                 onTap: () async {
-                  if (employee != null && type != null) {
+                  if (type != null) {
                     var asset = AssetsController.instance.value
                         .firstWhere((element) => element.id == widget.assetId);
 
                     await AssetDetailController.getInstance(widget.assetId)
-                        .associate(
-                      owner: employee!,
-                      newAsset: asset,
-                      oldAsset: oldAsset,
+                        .dissociate(
+                      newasset: asset,
                     );
-                  }
 
-                  AppRoute.pop(context);
+                    AppRoute.pop(context);
+                  }
                 },
               ),
             ],

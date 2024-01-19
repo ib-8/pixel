@@ -39,7 +39,7 @@ class Asset {
       'owner': owner,
       'serialNumber': serialNumber,
       'status': status,
-      'ownerShip': ownerShip,
+      'ownership': ownerShip,
       'warrantyEndDate': warrantyEndDate
     };
   }

@@ -2,17 +2,17 @@ class Event {
   Event({
     required this.id,
     required this.assetId,
-     this.expense,
-     this.note,
+    this.expense,
+    this.note,
     required this.type,
-     this.user,
-     this.vendor,
+    this.employee,
+    this.vendor,
   });
 
   String id;
   String assetId;
   String type;
-  String? user;
+  String? employee;
   String? expense;
   String? note;
   String? vendor;
@@ -24,7 +24,7 @@ class Event {
       expense: data['expense'],
       note: data['note'],
       type: data['type'],
-      user: data['user'],
+      employee: data['employee'],
       vendor: data['vendor'],
     );
   }
@@ -35,7 +35,7 @@ class Event {
       'expense': expense,
       'note': note,
       'type': type,
-      'user': user,
+      'employee': employee,
       'vendor': vendor,
     };
   }

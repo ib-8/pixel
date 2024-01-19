@@ -39,6 +39,7 @@ dependencies:
   get_it: 7.6.4
   pretty_qr_code: 3.1.0
   mobile_scanner: 3.5.6
+  fluttertoast: 8.2.2
 
 dev_dependencies:
   flutter_test:

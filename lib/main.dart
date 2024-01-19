@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:super_pixel/controller/assets_controller.dart';
@@ -67,6 +69,11 @@ class _AppState extends State<App> {
           return MaterialPageRoute(
               builder: (context) => AssetDetail(assetId: id ?? ''));
         }
+
+        if (Platform.isAndroid || Platform.isIOS) {
+          return MaterialPageRoute(builder: (context) => const AssetList());
+        }
+
         return MaterialPageRoute(builder: (context) => const Home());
       },
     );

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:super_pixel/controller/assets_controller.dart';
 import 'package:super_pixel/ui/routes/app_route.dart';
@@ -28,6 +30,7 @@ class _AssetListState extends State<AssetList> {
 
   @override
   Widget build(BuildContext context) {
+    var isMobile = Platform.isIOS || Platform.isAndroid;
     return Scaffold(
       appBar: AppBar(
         title: const Text('All Assets'),
@@ -42,8 +45,9 @@ class _AssetListState extends State<AssetList> {
             itemBuilder: (context, index) {
               var asset = assets[index];
               return GestureDetector(
-                onTap: () {
-                  AppRoute.push(context, AssetDetail(assetId: asset.id));
+                onTap: () async {
+                  await AppRoute.push(context, AssetDetail(assetId: asset.id));
+                  AssetsController.getInstance().getAllAssets();
                 },
                 child: Card(
                   margin:
@@ -83,6 +87,24 @@ class _AssetListState extends State<AssetList> {
           );
         },
       ),
+      floatingActionButton: isMobile
+          ? FloatingActionButton(
+              heroTag: '',
+              child: const Icon(Icons.qr_code),
+              onPressed: () {
+                AppSheet.show(
+                    context: context,
+                    builder: (context) {
+                      return AssetScanner(onTap: (asset) {
+                        AppRoute.push(
+                          context,
+                          AssetDetail(assetId: asset.id),
+                        );
+                      });
+                    });
+              },
+            )
+          : null,
     );
   }
 }
@@ -110,9 +132,10 @@ class SideBar extends StatelessWidget {
           ),
           ListTile(
             title: const Text('Assets'),
-            onTap: () {
+            onTap: () async {
               // Add functionality for Item 1
-              AppRoute.push(context, const AssetList());
+              await AppRoute.push(context, const AssetList());
+
               //  Navigator.pop(context); // Close the drawer after selecting an item
             },
           ),
