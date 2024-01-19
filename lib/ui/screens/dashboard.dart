@@ -184,15 +184,7 @@ class _DashboardState extends State<Dashboard> {
     for (int id in ids) {
       Asset? asset = assets.firstWhere(
         (asset) => int.tryParse(asset.id) == id,
-        orElse: () => Asset(
-          assetId: '',
-          owner: '',
-          type: '',
-          status: '',
-          id: '',
-          model: '',
-          serialNumber: '',
-        ),
+       
       );
 
       if (asset.id.isNotEmpty) {
@@ -200,10 +192,11 @@ class _DashboardState extends State<Dashboard> {
           'ID: ${asset.id}',
           'Owner: ${asset.owner}',
           'Type: ${asset.type}',
-          'Asset Id: ${asset.assetId}',
           'Model: ${asset.model}',
           'Serial Number: ${asset.serialNumber}',
           'Status: ${asset.status}',
+          'Warranty Date : ${asset.warrantyEndDate}',
+          'Ownership: ${asset.ownerShip}',
         ]);
       }
     }

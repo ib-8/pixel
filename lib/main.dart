@@ -58,7 +58,7 @@ class _AppState extends State<App> {
           return MaterialPageRoute(
               builder: (context) => AssetDetail(assetId: id ?? ''));
         }
-        return MaterialPageRoute(builder: (context) => const EmployeeList());
+        return MaterialPageRoute(builder: (context) => const Home());
       },
     );
   }

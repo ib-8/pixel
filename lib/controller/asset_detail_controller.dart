@@ -53,8 +53,8 @@ class AssetDetailController extends ValueNotifier<AssetDetailState> {
     // var response = await DatabaseTable.assets.update(values);
   }
 
-  static close() {
-    DependencyInjector.instance.unregister<AssetDetailController>();
+  static close(assetId) {
+    DependencyInjector.instance.unregister<AssetDetailController>(instanceName:assetId );
   }
 }
 

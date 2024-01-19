@@ -30,7 +30,7 @@ class Asset {
       owner: data['owner']??'',
       serialNumber: data['serialNumber']??'',
       status: data['status'],
-      ownerShip: data['ownerShip'] ?? '',
+      ownerShip: data['ownership'] ?? '',
       warrantyEndDate: data['warrantyEndDate'] ?? ''
     );
   }
