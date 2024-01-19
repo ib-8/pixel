@@ -151,7 +151,7 @@ class _HomeState extends State<Home> {
                   ),
                   HomeCard(
                     lable: 'Expenses',
-                    onTap: () => onTabChange(2),
+                    onTap: () => onTabChange(4),
                   ),
                 ],
               ),
