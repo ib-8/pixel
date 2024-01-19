@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:super_pixel/ui/screens/asset_detail.dart';
+import 'package:super_pixel/ui/screens/employee_list.dart';
 import 'package:super_pixel/ui/screens/home.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 
@@ -44,7 +45,7 @@ class App extends StatelessWidget {
           return MaterialPageRoute(
               builder: (context) => AssetDetail(assetId: id ?? ''));
         }
-        return MaterialPageRoute(builder: (context) => const Home());
+        return MaterialPageRoute(builder: (context) => const EmployeeList());
       },
     );
   }

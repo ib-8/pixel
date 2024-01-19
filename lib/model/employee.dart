@@ -12,7 +12,7 @@ class Employee {
 
   factory Employee.from(Map data) {
     return Employee(
-      id: data['id'],
+      id: data['id'].toString(),
       employeeId: data['employeeId'],
       name: data['name'],
       reportingTo: data['reportingTo'],
