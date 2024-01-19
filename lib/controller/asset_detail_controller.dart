@@ -39,7 +39,7 @@ class AssetDetailController extends ValueNotifier<AssetDetailState> {
       value = value.copyWith(asset: Asset.from(response));
     }
 
-    print('all response is-------- $response');
+    // print('all response is-------- $response');
   }
 
   getAllEvents() async {
@@ -47,7 +47,7 @@ class AssetDetailController extends ValueNotifier<AssetDetailState> {
 
     value = value.copyWith(events: response.map((e) => Event.from(e)).toList());
 
-    print('all response is $response');
+    // print('all response is $response');
   }
 
   associate({required String owner, Asset? oldAsset}) async {
