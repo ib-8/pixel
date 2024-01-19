@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:super_pixel/ui/screens/asset_detail.dart';
+import 'package:super_pixel/ui/screens/home.dart';
+import 'package:flutter_web_plugins/url_strategy.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -9,82 +12,77 @@ void main() async {
     anonKey:
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im14emF3enB3Y2NqcXVhaXlncW15Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDUzODYwMDgsImV4cCI6MjAyMDk2MjAwOH0.lByNBo8hYdt-q19SlkXbUqP5w4c-4irXnl8khXGyBNI',
   );
-  runApp(const MyApp());
+  usePathUrlStrategy();
+  runApp(const App());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class App extends StatelessWidget {
+  const App({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Color.fromARGB(255, 77, 56, 81),
+          titleTextStyle: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+          ),
+          iconTheme: IconThemeData(
+            color: Colors.white,
+          ),
+        ),
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      onGenerateRoute: (settings) {
+        if (settings.name != '/') {
+          var id = settings.name?.replaceAll('/', '');
+          return MaterialPageRoute(
+              builder: (context) => AssetDetail(assetId: id ?? ''));
+        }
+        return MaterialPageRoute(builder: (context) => const Home());
+      },
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
 
-  final String title;
+////////////////////////////////////////////////
+///
+////// Asset Type -------------
+// Laptop
+// Charger
+// HDMI Cable
 
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
+/// Asset Model -------------
+// Macbook Pro M2
+// Macbook Pro M3
+// Macbook Charger
+// HDMI Cable
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+/// Asset Status -------------
+// In Use
+// In Stock
+// In Service
+// Missed
+// Disposed
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+/// Event Type -------------
+// Purchased
+// Associated
+// Dissociated
+// Sent to service
+// Received from service
+// Missed
+// Disposed
 
-  Future check() async {
-    var response = await Supabase.instance.client.from('test').select();
-
-    print('response is $response');
-
-    return response;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: check(),
-        builder: (context, snapshot) {
-          print('data is ${snapshot.data}');
-          return Scaffold(
-            appBar: AppBar(
-              backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-              title: Text(widget.title),
-            ),
-            body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  const Text(
-                    'You have pushed the button this many times:',
-                  ),
-                  Text(
-                    '$_counter',
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  ),
-                ],
-              ),
-            ),
-            floatingActionButton: FloatingActionButton(
-              onPressed: _incrementCounter,
-              tooltip: 'Increment',
-              child: const Icon(Icons.add),
-            ),
-          );
-        });
-  }
-}
+/// Expense Type -------------
+// Purchase
+// Service
+// Accessory
+// Warranty Increase
+// Insurance
