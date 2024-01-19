@@ -33,7 +33,6 @@ class _DashboardState extends State<Dashboard> {
       appBar: AppBar(
         title: const Text('IT Assets'),
       ),
-      drawer: const SideBar(),
       body: StateBuilder(
         controller: AssetsController.getInstance(),
         builder: (context, assets) {
@@ -183,7 +182,6 @@ class _DashboardState extends State<Dashboard> {
     for (int id in ids) {
       Asset? asset = assets.firstWhere(
         (asset) => int.tryParse(asset.id) == id,
-       
       );
 
       if (asset.id.isNotEmpty) {

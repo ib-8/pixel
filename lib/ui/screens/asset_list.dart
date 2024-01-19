@@ -32,7 +32,6 @@ class _AssetListState extends State<AssetList> {
       appBar: AppBar(
         title: const Text('All Assets'),
       ),
-      drawer: const SideBar(),
       body: StateBuilder(
         controller: AssetsController.getInstance(),
         builder: (context, assets) {
