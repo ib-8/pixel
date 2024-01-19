@@ -2,7 +2,7 @@ class Event {
   Event({
     required this.id,
     required this.assetId,
-    required this.expense,
+     this.expense,
     required this.note,
     required this.type,
     required this.user,
@@ -13,14 +13,14 @@ class Event {
   String assetId;
   String type;
   String user;
-  String expense;
+  String? expense;
   String note;
   String vendor;
 
   factory Event.from(Map data) {
     return Event(
       id: data['id'].toString(),
-      assetId: data['assetId'],
+      assetId: data['assetId'].toString(),
       expense: data['expense'],
       note: data['note'],
       type: data['type'],

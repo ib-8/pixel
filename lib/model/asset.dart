@@ -1,7 +1,6 @@
 class Asset {
   Asset({
     required this.id,
-    required this.assetId,
     required this.type,
     required this.model,
     required this.owner,
@@ -12,7 +11,6 @@ class Asset {
   });
 
   String id;
-  String assetId;
   String type;
   String model;
   String owner;
@@ -24,7 +22,6 @@ class Asset {
   factory Asset.from(Map<String, dynamic> data) {
     return Asset(
       id: data['id'].toString(),
-      assetId: data['assetId'],
       type: data['type'],
       model: data['model'],
       owner: data['owner']??'',
@@ -37,7 +34,6 @@ class Asset {
 
   Map toMap() {
     return {
-      'assetId': assetId,
       'type': type,
       'model': model,
       'owner': owner,

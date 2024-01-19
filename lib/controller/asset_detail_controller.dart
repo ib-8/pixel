@@ -43,7 +43,7 @@ class AssetDetailController extends ValueNotifier<AssetDetailState> {
   }
 
   getAllEvents() async {
-    var response = await DatabaseTable.assets.select().eq('assetId', assetId);
+    var response = await DatabaseTable.assets.select().eq('id', assetId);
 
     value = value.copyWith(events: response.map((e) => Event.from(e)).toList());
 
