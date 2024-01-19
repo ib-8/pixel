@@ -3,9 +3,11 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:super_pixel/controller/assets_controller.dart';
 import 'package:super_pixel/controller/employees_controller.dart';
 import 'package:super_pixel/ui/screens/asset_detail.dart';
+import 'package:super_pixel/ui/screens/dashboard.dart';
 import 'package:super_pixel/ui/screens/employee_list.dart';
-import 'package:super_pixel/ui/screens/home.dart';
+import 'package:super_pixel/ui/screens/asset_list.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
+import 'package:super_pixel/ui/widget/app_text.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,9 +32,10 @@ class _AppState extends State<App> {
   @override
   void initState() {
     AssetsController.init();
-        EmployeesController.init();
+    EmployeesController.init();
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -58,12 +61,11 @@ class _AppState extends State<App> {
           return MaterialPageRoute(
               builder: (context) => AssetDetail(assetId: id ?? ''));
         }
-        return MaterialPageRoute(builder: (context) => const EmployeeList());
+        return MaterialPageRoute(builder: (context) => const Home());
       },
     );
   }
 }
-
 
 ////////////////////////////////////////////////
 ///
@@ -101,9 +103,104 @@ class _AppState extends State<App> {
 // Warranty Increase
 // Insurance
 
+class Home extends StatefulWidget {
+  const Home({super.key});
 
-/// Asset Request Type -------------
-// New
-// Service
-// Replacement
+  @override
+  State<Home> createState() => _HomeState();
+}
 
+class _HomeState extends State<Home> {
+  int _selectedIndex = 0;
+  NavigationRailLabelType labelType = NavigationRailLabelType.all;
+
+  double groupAlignment = -1.0;
+
+  onTabChange(index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Row(
+        children: <Widget>[
+          Card(
+            margin: EdgeInsets.zero,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Column(
+                children: [
+                  HomeCard(
+                    lable: 'Home',
+                    onTap: () => onTabChange(0),
+                  ),
+                  HomeCard(
+                    lable: 'Assets',
+                    onTap: () => onTabChange(1),
+                  ),
+                  HomeCard(
+                    lable: 'Employees',
+                    onTap: () => onTabChange(2),
+                  ),
+                  HomeCard(
+                    lable: 'Requesters',
+                    onTap: () => onTabChange(2),
+                  ),
+                  HomeCard(
+                    lable: 'Expenses',
+                    onTap: () => onTabChange(4),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const VerticalDivider(thickness: 1, width: 1),
+          Expanded(
+            child: Builder(
+              builder: (context) {
+                switch (_selectedIndex) {
+                  case 0:
+                    return const Dashboard();
+                  case 1:
+                    return const AssetList();
+                  case 2:
+                    return const EmployeeList();
+                  default:
+                    return const Dashboard();
+                }
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class HomeCard extends StatelessWidget {
+  const HomeCard({required this.lable, required this.onTap, super.key});
+
+  final String lable;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
+      child: GestureDetector(
+        onTap: onTap,
+        child: Card(
+          elevation: 0,
+          margin: EdgeInsets.zero,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+            child: AppText(lable),
+          ),
+        ),
+      ),
+    );
+  }
+}

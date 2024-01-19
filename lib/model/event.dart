@@ -31,7 +31,6 @@ class Event {
 
   Map toMap() {
     return {
-      'id': id,
       'assetId': assetId,
       'expense': expense,
       'note': note,

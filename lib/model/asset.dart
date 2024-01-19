@@ -30,22 +30,21 @@ class Asset {
       owner: data['owner']??'',
       serialNumber: data['serialNumber']??'',
       status: data['status'],
-      ownerShip: data['ownerShip'] ?? '',
+      ownerShip: data['ownership'] ?? '',
       warrantyEndDate: data['warrantyEndDate'] ?? ''
     );
   }
 
   Map toMap() {
     return {
-      'id': id,
       'assetId': assetId,
       'type': type,
       'model': model,
       'owner': owner,
       'serialNumber': serialNumber,
       'status': status,
-      'ownerShip':ownerShip,
-      'warrantyEndDate':warrantyEndDate
+      'ownerShip': ownerShip,
+      'warrantyEndDate': warrantyEndDate
     };
   }
 }

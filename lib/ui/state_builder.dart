@@ -7,7 +7,6 @@ class StateBuilder<T> extends StatelessWidget {
   const StateBuilder({
     required this.controller,
     required this.builder,
-    super.key,
   });
 
   final ValueListenable<T> controller;

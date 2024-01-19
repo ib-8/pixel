@@ -22,7 +22,6 @@ class Employee {
 
   Map toMap() {
     return {
-      'id': id,
       'employeeId': employeeId,
       'name': name,
       'reportingTo': reportingTo,

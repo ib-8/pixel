@@ -2,13 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:super_pixel/controller/assets_controller.dart';
 import 'package:super_pixel/model/asset.dart';
-import 'package:super_pixel/ui/screens/assetDetails.dart';
 import 'package:super_pixel/ui/state_builder.dart';
 import 'package:super_pixel/ui/routes/app_route.dart';
 import 'package:super_pixel/ui/screens/asset_detail.dart';
 import 'package:super_pixel/ui/widget/app_sheet.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
-import 'package:super_pixel/ui/screens/home.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -34,7 +32,6 @@ class _DashboardState extends State<Dashboard> {
       appBar: AppBar(
         title: const Text('IT Assets'),
       ),
-      drawer: const SideBar(),
       body: StateBuilder(
         controller: AssetsController.getInstance(),
         builder: (context, assets) {
@@ -192,10 +189,11 @@ class _DashboardState extends State<Dashboard> {
           'ID: ${asset.id}',
           'Owner: ${asset.owner}',
           'Type: ${asset.type}',
-          'Asset Id: ${asset.assetId}',
           'Model: ${asset.model}',
           'Serial Number: ${asset.serialNumber}',
           'Status: ${asset.status}',
+          'Warranty Date : ${asset.warrantyEndDate}',
+          'Ownership: ${asset.ownerShip}',
         ]);
       }
     }

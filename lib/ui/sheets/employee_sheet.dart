@@ -1,10 +1,9 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:super_pixel/controller/employees_controller.dart';
 import 'package:super_pixel/ui/routes/app_route.dart';
 import 'package:super_pixel/ui/sheets/association_type_sheet.dart';
+import 'package:super_pixel/ui/state_builder.dart';
 import 'package:super_pixel/ui/widget/app_text.dart';
-import 'package:super_pixel/utils/association_type.dart';
 
 class EmployeeSelectionSheet extends StatefulWidget {
   const EmployeeSelectionSheet({super.key});
@@ -21,7 +20,7 @@ class _EmployeeSelectionSheetState extends State<EmployeeSelectionSheet> {
 
   TextEditingController _noteController = TextEditingController();
 
-  onSelect(String type) {
+  onSelect(String employeeName) {
     AppRoute.pop(context, type);
   }
 
@@ -33,33 +32,48 @@ class _EmployeeSelectionSheetState extends State<EmployeeSelectionSheet> {
       minChildSize: 0.8,
       expand: false,
       builder: (context, contrioller) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const Center(
-                child: AppText(
-                  'Select Employee',
-                  weight: FontWeight.bold,
-                  size: 20,
+        return StateBuilder(
+            controller: EmployeesController.getInstance(),
+            builder: (context, data) {
+              var allEmployees = data;
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    const Center(
+                      child: AppText(
+                        'Select Employee',
+                        weight: FontWeight.bold,
+                        size: 20,
+                      ),
+                    ),
+                    ...List.generate(
+                      allEmployees.length,
+                      (index) {
+                        var employee = allEmployees[index];
+
+                        return FormTile(
+                          lable: employee.name,
+                          onTap: () => onSelect(
+                            employee.name,
+                          ),
+                        );
+                      },
+                    )
+
+                    // FormTile(
+                    //   lable: AssociationType.temporary,
+                    //   onTap: () => onSelect(AssociationType.temporary),
+                    // ),
+                    // FormTile(
+                    //   lable: AssociationType.replacement,
+                    //   onTap: () => onSelect(AssociationType.replacement),
+                    // ),
+                  ],
                 ),
-              ),
-              FormTile(
-                lable: AssociationType.newAsset,
-                onTap: () => onSelect(AssociationType.newAsset),
-              ),
-              FormTile(
-                lable: AssociationType.temporary,
-                onTap: () => onSelect(AssociationType.temporary),
-              ),
-              FormTile(
-                lable: AssociationType.replacement,
-                onTap: () => onSelect(AssociationType.replacement),
-              ),
-            ],
-          ),
-        );
+              );
+            });
       },
     );
   }
