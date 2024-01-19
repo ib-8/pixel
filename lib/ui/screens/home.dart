@@ -8,6 +8,7 @@ import 'package:super_pixel/ui/screens/dashboard.dart';
 import 'package:super_pixel/ui/state_builder.dart';
 import 'package:super_pixel/ui/widget/app_sheet.dart';
 import 'package:super_pixel/ui/widget/app_text.dart';
+import 'package:super_pixel/ui/widget/asset_scanner.dart';
 
 
 
@@ -57,13 +58,29 @@ class _HomeState extends State<Home> {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 10.0, vertical: 10),
-                    child: Column(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        AppText(
-                          asset.model,
-                          weight: FontWeight.bold,
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            AppText(
+                              asset.model,
+                              weight: FontWeight.bold,
+                            ),
+                            AppText(asset.owner),
+                          ],
                         ),
-                        AppText(asset.owner),
+                        Card(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20.0, vertical: 10.0),
+                            child: AppText(
+                              asset.status,
+                              weight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -73,8 +90,9 @@ class _HomeState extends State<Home> {
           );
         },
       ),
-      floatingActionButton: FloatingActionButton(onPressed: () {
-        AppSheet.show(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          AppSheet.show(
             context: context,
             builder: (context) {
               return DraggableScrollableSheet(
@@ -83,22 +101,20 @@ class _HomeState extends State<Home> {
                 minChildSize: 0.8,
                 expand: false,
                 builder: (context, scrollController) {
-                  return MobileScanner(
-                    onDetect: (barcodes) {
-                      HapticFeedback.heavyImpact();
-                      print('barcode is ${barcodes.barcodes.first.rawValue}');
-                      if (barcodes.barcodes.first.rawValue != null) {
-                        var segments =
-                            barcodes.barcodes.first.rawValue!.split('/');
-                        AppRoute.push(
-                            context, AssetDetail(assetId: segments.last));
-                      }
+                  return AssetScanner(
+                    onTap: (asset) {
+                      AppRoute.push(
+                        context,
+                        AssetDetail(assetId: asset.id),
+                      );
                     },
                   );
                 },
               );
-            });
-      }),
+            },
+          );
+        },
+      ),
     );
   }
 }

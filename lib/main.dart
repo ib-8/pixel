@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:super_pixel/controller/assets_controller.dart';
 import 'package:super_pixel/ui/screens/asset_detail.dart';
-import 'package:super_pixel/ui/screens/dashboard.dart';
 import 'package:super_pixel/ui/screens/home.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 
@@ -26,7 +25,6 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-
   @override
   void initState() {
     AssetsController.init();
@@ -93,8 +91,8 @@ class _AppState extends State<App> {
 // Missed
 // Disposed
 
-/// Expense Type -------------
-// Purchase
+/// Asset Expense Type -------------
+// New Purchase
 // Service
 // Accessory
 // Warranty Increase
