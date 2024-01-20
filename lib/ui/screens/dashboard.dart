@@ -100,45 +100,45 @@ class _DashboardState extends State<Dashboard> {
                 }).toList(),
 
                 // Display warranty status count in a separate card
-                // Card(
-                //   child: Container(
-                //     width: MediaQuery.of(context).size.width * 0.3,
-                //     child: Padding(
-                //       padding: const EdgeInsets.symmetric(
-                //           horizontal: 20.0, vertical: 20),
-                //       child: Column(
-                //         crossAxisAlignment: CrossAxisAlignment.start,
-                //         children: [
-                //           const Padding(
-                //             padding: EdgeInsets.all(8.0),
-                //             child: Text('Warranty Status'),
-                //           ),
-                //           ...warrantyCount.entries.map((warrantyStatusEntry) {
-                //             String warrantyStatus = warrantyStatusEntry.key;
-                //             Map<String, dynamic> warrantyIdMap =
-                //                 warrantyStatusEntry.value;
+                Card(
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * 0.3,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20.0, vertical: 20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text('Warranty Status'),
+                          ),
+                          ...warrantyCount.entries.map((warrantyStatusEntry) {
+                            String warrantyStatus = warrantyStatusEntry.key;
+                            Map<String, dynamic> warrantyIdMap =
+                                warrantyStatusEntry.value;
 
-                //             return Padding(
-                //               padding: const EdgeInsets.all(8.0),
-                //               child: GestureDetector(
-                //                 onTap: () {
-                //                   // Handle tap, e.g., display asset details
-                //                   if (warrantyIdMap['count'] != 0) {
-                //                     List<int> ids = warrantyIdMap['ids'] ?? [];
-                //                     showAssetDetailsDialog(
-                //                         context, ids, assets);
-                //                   }
-                //                 },
-                //                 child: Text(
-                //                     '$warrantyStatus: ${warrantyIdMap['count'] ?? 0}'),
-                //               ),
-                //             );
-                //           }).toList(),
-                //         ],
-                //       ),
-                //     ),
-                //   ),
-                // ),
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: GestureDetector(
+                                onTap: () {
+                                  // Handle tap, e.g., display asset details
+                                  if (warrantyIdMap['count'] != 0) {
+                                    List<int> ids = warrantyIdMap['ids'] ?? [];
+                                    showAssetDetailsDialog(
+                                        context, ids, assets);
+                                  }
+                                },
+                                child: Text(
+                                    '$warrantyStatus: ${warrantyIdMap['count'] ?? 0}'),
+                              ),
+                            );
+                          }).toList(),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
           );
