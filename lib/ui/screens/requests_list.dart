@@ -1,8 +1,145 @@
 import 'package:flutter/material.dart';
 import 'package:super_pixel/controller/requester_controller.dart';
+import 'package:super_pixel/database_table.dart';
+import 'package:super_pixel/model/asset.dart';
+import 'package:super_pixel/model/expenses.dart';
 import 'package:super_pixel/model/requester.dart';
 import 'package:super_pixel/ui/state_builder.dart';
 import 'package:super_pixel/ui/widget/app_text.dart';
+
+
+class YourForm extends StatefulWidget {
+  @override
+  _YourFormState createState() => _YourFormState();
+}
+
+enum RequestType { Service, New, Replacement }
+
+class _YourFormState extends State<YourForm> {
+  final TextEditingController nameController = TextEditingController();
+ final TextEditingController assetTypeController = TextEditingController();
+
+  String requestType = '';
+  
+
+  RequestType selectedRequestType = RequestType.Service;
+
+  Future<void> _selectDate(
+      BuildContext context, TextEditingController controller, DateTime? selectedDate) async {
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: selectedDate ?? DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+    );
+
+    if (pickedDate != null && pickedDate != selectedDate) {
+      setState(() {
+        controller.text = pickedDate.toLocal().toString().split(' ')[0];
+      });
+    }
+  }
+
+  Future<void> insertData(String selectedString) async {
+    var requester = Requester(
+      id: '',
+      type: selectedString,
+      model: '',
+      status: 'open',
+      employee: nameController.text,
+     notes:'',
+    assetType:assetTypeController.text,
+      
+    );
+    
+    await DatabaseTable.requesters.insert(requester.toMap());
+  }
+
+  Widget buildServiceForm() {
+    return Column(
+      children: [
+        TextField(
+          controller: nameController,
+          decoration: InputDecoration(labelText: 'Employee Name'),
+        ),
+        // Other fields specific to the Service request
+        
+        TextField(
+          controller: assetTypeController,
+          decoration: InputDecoration(labelText: 'Asset Type'),
+        ),
+      ],
+    );
+  }
+
+
+
+
+
+  @override
+  Widget build(BuildContext context) {
+    Widget selectedForm;
+    if (selectedRequestType == RequestType.Service) {
+      selectedForm = buildServiceForm();
+      requestType="Service";
+    } else if (selectedRequestType == RequestType.New) {
+      selectedForm = buildServiceForm();
+       requestType="New";
+    } else if (selectedRequestType == RequestType.Replacement) {
+      selectedForm = buildServiceForm();
+      requestType="Replacement";
+    } else {
+      // Default to an empty container if none of the types match
+      selectedForm = Container();
+    }
+
+    return AlertDialog(
+      title: Text('Add Request'),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          DropdownButtonFormField<RequestType>(
+            value: selectedRequestType,
+            onChanged: (RequestType? value) {
+              setState(() {
+                selectedRequestType = value!;
+              });
+            },
+            items: RequestType.values.map<DropdownMenuItem<RequestType>>((RequestType value) {
+              return DropdownMenuItem<RequestType>(
+                value: value,
+                child: Text(value.toString().split('.').last),
+              );
+            }).toList(),
+            decoration: InputDecoration(
+              labelText: 'Select Request Type',
+            ),
+          ),
+          selectedForm,
+        ],
+      ),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop(); // Close the form
+          },
+          child: Text('Close'),
+        ),
+        TextButton(
+          onPressed: () async {
+            await insertData(requestType);
+            Navigator.of(context).pop(); // Close the form
+          },
+          child: Text('Add'),
+        ),
+      ],
+    );
+  }
+}
+
+
+
+
 
 class RequestsList extends StatefulWidget {
   const RequestsList({super.key});
@@ -27,6 +164,26 @@ class _RequestsListState extends State<RequestsList> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('All Requests'),
+         actions: [
+          Align(
+            alignment: Alignment.topRight,
+            child: Padding(
+              padding:
+                  EdgeInsets.only(top: 8.0, right: 40.0), // Adjust as needed
+              child: IconButton(
+                icon: Icon(Icons.person_add, color: Colors.white),
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return YourForm();
+                    },
+                  );
+                },
+              ),
+            ),
+          ),
+        ],
       ),
       body: StateBuilder(
         controller: RequesterController.getInstance(),

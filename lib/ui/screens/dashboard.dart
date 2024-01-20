@@ -239,9 +239,7 @@ class _DashboardState extends State<Dashboard> {
       'In Warranty': {'ids': <int>[], 'count': 0},
     };
     for (Asset data in dataList) {
-      if (DateTime.parse(data.warrantyEndDate)
-              .difference(DateTime.now())
-              .inDays <=
+      if (DateTime.parse(data.warrantyEndDate).difference(DateTime.now()).inDays <=
           0) {
         statusCount['Expired']!['ids']
             .add(int.tryParse(data.id) ?? 0); // Convert String to int
