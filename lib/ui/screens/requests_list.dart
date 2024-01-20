@@ -1,4 +1,8 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
 import 'package:super_pixel/controller/requester_controller.dart';
 import 'package:super_pixel/database_table.dart';
 import 'package:super_pixel/model/asset.dart';
@@ -24,28 +28,15 @@ class _YourFormState extends State<YourForm> {
 
   RequestType selectedRequestType = RequestType.Service;
 
-  Future<void> _selectDate(
-      BuildContext context, TextEditingController controller, DateTime? selectedDate) async {
-    final DateTime? pickedDate = await showDatePicker(
-      context: context,
-      initialDate: selectedDate ?? DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2101),
-    );
 
-    if (pickedDate != null && pickedDate != selectedDate) {
-      setState(() {
-        controller.text = pickedDate.toLocal().toString().split(' ')[0];
-      });
-    }
-  }
+
 
   Future<void> insertData(String selectedString) async {
     var requester = Requester(
       id: '',
       type: selectedString,
       model: '',
-      status: 'open',
+      status: 'Open',
       employee: nameController.text,
      notes:'',
     assetType:assetTypeController.text,
@@ -80,19 +71,16 @@ class _YourFormState extends State<YourForm> {
   Widget build(BuildContext context) {
     Widget selectedForm;
     if (selectedRequestType == RequestType.Service) {
-      selectedForm = buildServiceForm();
       requestType="Service";
     } else if (selectedRequestType == RequestType.New) {
-      selectedForm = buildServiceForm();
        requestType="New";
     } else if (selectedRequestType == RequestType.Replacement) {
-      selectedForm = buildServiceForm();
       requestType="Replacement";
     } else {
       // Default to an empty container if none of the types match
       selectedForm = Container();
     }
-
+selectedForm = buildServiceForm();
     return AlertDialog(
       title: Text('Add Request'),
       content: Column(
