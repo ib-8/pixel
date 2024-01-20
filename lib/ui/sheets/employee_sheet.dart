@@ -37,7 +37,7 @@ class _EmployeeSelectionSheetState extends State<EmployeeSelectionSheet> {
             controller: EmployeesController.getInstance(),
             builder: (context, data) {
               var allEmployees = data;
-              return Padding(
+              return SingleChildScrollView(
                 padding: const EdgeInsets.symmetric(horizontal: 10.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,

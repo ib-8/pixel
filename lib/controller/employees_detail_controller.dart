@@ -55,6 +55,8 @@ class EmployeeState {
     List<Asset>? assets,
   }) {
     return EmployeeState(
-        employee: employee ?? this.employee, assets: assets ?? this.assets);
+      employee: employee ?? this.employee,
+      assets: assets ?? this.assets,
+    );
   }
 }

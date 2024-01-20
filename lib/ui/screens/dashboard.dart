@@ -43,61 +43,71 @@ class _DashboardState extends State<Dashboard> {
 
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
-            child: Wrap(
-              crossAxisAlignment: WrapCrossAlignment.center,
-              alignment: WrapAlignment.center,
-              spacing: 16.0,
-              runSpacing: 16.0,
+            child: Column(
               children: [
-                // Display status counts
-                ...groupedData.entries.map((entry) {
-                  String type = entry.key;
-                  List<Asset> typeData = entry.value;
+                Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  alignment: WrapAlignment.center,
+                  spacing: 16.0,
+                  runSpacing: 16.0,
+                  children: [
+                    // Display status counts
+                    ...groupedData.entries.map((entry) {
+                      String type = entry.key;
+                      List<Asset> typeData = entry.value;
 
-                  Map<String, Map<String, dynamic>> statusCount =
-                      countStatus(typeData);
-                  int itemCount = typeData.length;
+                      Map<String, Map<String, dynamic>> statusCount =
+                          countStatus(typeData);
+                      int itemCount = typeData.length;
 
-                  return Card(
-                    child: Container(
-                      width: MediaQuery.of(context).size.width * 0.2,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Center(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: AppText(
-                                '$type ($itemCount)',
-                                weight: FontWeight.bold,
+                      return Card(
+                        child: Container(
+                          width: MediaQuery.of(context).size.width * 0.2,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: AppText(
+                                    '$type ($itemCount)',
+                                    weight: FontWeight.bold,
+                                  ),
+                                ),
                               ),
-                            ),
+                              ...statusCount.entries.map((statusEntry) {
+                                String status = statusEntry.key;
+                                Map<String, dynamic> idMap = statusEntry.value;
+
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20.0, vertical: 10),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      // Handle tap, e.g., display asset details
+                                      if (idMap['count'] != 0) {
+                                        List<int> ids = idMap['ids'] ?? [];
+                                        showAssetDetailsDialog(
+                                            context, ids, assets);
+                                      }
+                                    },
+                                    child:
+                                        Text('$status: ${idMap['count'] ?? 0}'),
+                                  ),
+                                );
+                              }).toList(),
+                            ],
                           ),
-                          ...statusCount.entries.map((statusEntry) {
-                            String status = statusEntry.key;
-                            Map<String, dynamic> idMap = statusEntry.value;
+                        ),
+                      );
+                    }).toList(),
+                  ],
+                ),
 
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 20.0, vertical: 10),
-                              child: GestureDetector(
-                                onTap: () {
-                                  // Handle tap, e.g., display asset details
-                                  if (idMap['count'] != 0) {
-                                    List<int> ids = idMap['ids'] ?? [];
-                                    showAssetDetailsDialog(
-                                        context, ids, assets);
-                                  }
-                                },
-                                child: Text('$status: ${idMap['count'] ?? 0}'),
-                              ),
-                            );
-                          }).toList(),
-                        ],
-                      ),
-                    ),
-                  );
-                }).toList(),
+                AppText(
+                  'Warranty Status',
+                  size: 30,
+                ),
 
                 // Display warranty status count in a separate card
                 Card(
@@ -109,10 +119,6 @@ class _DashboardState extends State<Dashboard> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Text('Warranty Status'),
-                          ),
                           ...warrantyCount.entries.map((warrantyStatusEntry) {
                             String warrantyStatus = warrantyStatusEntry.key;
                             Map<String, dynamic> warrantyIdMap =

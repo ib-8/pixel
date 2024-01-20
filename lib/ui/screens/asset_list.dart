@@ -195,7 +195,7 @@ class _AssetListState extends State<AssetList> {
               padding:
                   EdgeInsets.only(top: 8.0, right: 40.0), // Adjust as needed
               child: IconButton(
-                icon: Icon(Icons.person_add, color: Colors.white),
+                icon: Icon(Icons.add, color: Colors.white),
                 onPressed: () {
                   showDialog(
                     context: context,

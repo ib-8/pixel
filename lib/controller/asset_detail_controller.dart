@@ -36,14 +36,13 @@ class AssetDetailController extends ValueNotifier<AssetDetailState> {
     }
   }
 
-  getDetail() async {
+  Future getDetail() async {
     value = value.copyWith(isLoading: true);
-    print('getting detail>>>>>>>>> for $assetId');
+
     var response =
         await DatabaseTable.assets.select().eq('id', assetId).maybeSingle();
 
     if (response != null) {
-      print('response is ${response}');
       value = value.copyWith(asset: Asset.from(response));
     }
 
@@ -74,13 +73,13 @@ class AssetDetailController extends ValueNotifier<AssetDetailState> {
 
     var expenses = response.map((e) => Expenses.from(e)).toList();
 
-    value = value.copyWith(expenses: expenses);
-    print('all expense is $response');
-     print('expense is $expenses');
+    value = value.copyWith(expenses: expenses).copyWith();
   }
 
   Future associate(
-      {required String owner, required Asset newAsset, Asset? oldAsset}) async {
+      {required String owner,
+      required Asset newAsset,
+      Asset? oldAssett}) async {
     value = value.copyWith(isUpdating: true);
     var asset = newAsset
       ..status = AssetStatus.inUse
@@ -99,8 +98,8 @@ class AssetDetailController extends ValueNotifier<AssetDetailState> {
 
     await DatabaseTable.events.insert(associationEvent.toMap());
 
-    if (oldAsset != null) {
-      var oldAsset = value.asset!
+    if (oldAssett != null) {
+      var oldAsset = oldAssett
         ..status = AssetStatus.inStock
         ..owner = '';
 
@@ -117,8 +116,8 @@ class AssetDetailController extends ValueNotifier<AssetDetailState> {
       );
 
       await DatabaseTable.events.insert(dissociationEvent.toMap());
-      Toast.show('Associated Successfully');
     }
+    Toast.show('Associated Successfully');
   }
 
   Future dissociate({required Asset newasset}) async {
