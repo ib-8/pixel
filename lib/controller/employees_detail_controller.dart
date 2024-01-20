@@ -18,7 +18,11 @@ class EmployeeDetailController extends ValueNotifier<EmployeeState> {
 
   static init(employeeId) {
     try {
-      DependencyInjector.instance.registerLazySingleton<EmployeeDetailController>(() => EmployeeDetailController(employeeId),instanceName: employeeId,);
+      DependencyInjector.instance
+          .registerLazySingleton<EmployeeDetailController>(
+        () => EmployeeDetailController(employeeId),
+        instanceName: employeeId,
+      );
     } catch (e) {
       print('error is $e');
     }
@@ -27,6 +31,7 @@ class EmployeeDetailController extends ValueNotifier<EmployeeState> {
   getAssets() async {
     var assetDetailResponse =
         await DatabaseTable.assets.select().eq('owner', employeeName);
+
     var response = assetDetailResponse.map((e) => Asset.from(e)).toList();
     // print('all response is $response');
     value = value.copyWith(assets: response);
@@ -34,7 +39,8 @@ class EmployeeDetailController extends ValueNotifier<EmployeeState> {
   }
 
   static close(employeeId) {
-    DependencyInjector.instance.unregister<EmployeeDetailController>(instanceName: employeeId);
+    DependencyInjector.instance
+        .unregister<EmployeeDetailController>(instanceName: employeeId);
   }
 }
 

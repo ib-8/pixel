@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:super_pixel/controller/assets_controller.dart';
+import 'package:super_pixel/model/asset.dart';
 import 'package:super_pixel/ui/routes/app_route.dart';
 import 'package:super_pixel/ui/screens/asset_detail.dart';
 import 'package:super_pixel/ui/screens/dashboard.dart';
@@ -49,39 +50,7 @@ class _AssetListState extends State<AssetList> {
                   await AppRoute.push(context, AssetDetail(assetId: asset.id));
                   AssetsController.getInstance().getAllAssets();
                 },
-                child: Card(
-                  margin:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10.0, vertical: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            AppText(
-                              asset.model,
-                              weight: FontWeight.bold,
-                            ),
-                            AppText(asset.owner),
-                          ],
-                        ),
-                        Card(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 20.0, vertical: 10.0),
-                            child: AppText(
-                              asset.status,
-                              weight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                child: AssetCard(asset: asset),
               );
             },
           );
@@ -105,6 +74,50 @@ class _AssetListState extends State<AssetList> {
               },
             )
           : null,
+    );
+  }
+}
+
+class AssetCard extends StatelessWidget {
+  const AssetCard({
+    super.key,
+    required this.asset,
+  });
+
+  final Asset asset;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                AppText(
+                  asset.model,
+                  weight: FontWeight.bold,
+                ),
+                AppText(asset.owner),
+              ],
+            ),
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 20.0, vertical: 10.0),
+                child: AppText(
+                  asset.status,
+                  weight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

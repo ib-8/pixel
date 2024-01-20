@@ -13,19 +13,19 @@ class Expenses {
   String amount;
   String vendor;
   String note;
-  String date;
-
+  DateTime? date;
 
   factory Expenses.from(Map data) {
     print('fff $data');
     return Expenses(
-      type: data['type'],
-      assetId: data['assetId'],
-      amount: data['amount'],
-      vendor: data['vendor'],
-      note: data['note'] ?? '',
-      date: data['date']
-    );
+        type: data['type'],
+        assetId: data['assetId'],
+        amount: data['amount'],
+        vendor: data['vendor'],
+        note: data['note'] ?? '',
+        date: DateTime.tryParse(
+          data['date'],
+        ));
   }
 
   Map toMap() {

@@ -7,6 +7,7 @@ class Event {
     required this.type,
     required this.employee,
     this.vendor,
+    required this.eventTime,
   });
 
   String id;
@@ -16,6 +17,7 @@ class Event {
   String? expense;
   String? note;
   String? vendor;
+  DateTime? eventTime;
 
   factory Event.from(Map data) {
     return Event(
@@ -26,6 +28,7 @@ class Event {
       type: data['type'],
       employee: data['employee'] ?? '',
       vendor: data['vendor'] ?? '',
+      eventTime: DateTime.tryParse(data['eventTime']),
     );
   }
 
@@ -37,6 +40,7 @@ class Event {
       'type': type,
       'employee': employee,
       'vendor': vendor,
+      'eventTime': eventTime,
     };
   }
 }

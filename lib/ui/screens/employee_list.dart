@@ -9,6 +9,7 @@ import 'package:super_pixel/database_table.dart';
 import 'package:super_pixel/model/asset.dart';
 import 'package:super_pixel/ui/routes/app_route.dart';
 import 'package:super_pixel/ui/screens/asset_detail.dart';
+import 'package:super_pixel/ui/screens/asset_list.dart';
 import 'package:super_pixel/ui/screens/employee_detail.dart';
 import 'package:super_pixel/ui/state_builder.dart';
 import 'package:super_pixel/ui/widget/app_sheet.dart';
@@ -19,17 +20,12 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:super_pixel/utils/asset_status.dart';
 
-
-
 class YourForm extends StatefulWidget {
   @override
   _YourFormState createState() => _YourFormState();
 }
 
-
 class _YourFormState extends State<YourForm> {
-
-
   final TextEditingController nameController = TextEditingController();
   final TextEditingController typeController = TextEditingController();
   final TextEditingController modelController = TextEditingController();
@@ -37,17 +33,16 @@ class _YourFormState extends State<YourForm> {
   DateTime? _selectedDate1;
   final TextEditingController expenseController = TextEditingController();
   final TextEditingController statusController = TextEditingController();
- final TextEditingController serialNumberController = TextEditingController();
+  final TextEditingController serialNumberController = TextEditingController();
   final TextEditingController ownerShipController = TextEditingController();
- TextEditingController warrantyController = TextEditingController();
- DateTime? _selectedDate2;
+  TextEditingController warrantyController = TextEditingController();
+  DateTime? _selectedDate2;
 
-
-
-Future<void> _selectDate(BuildContext context,TextEditingController controller,DateTime? selectedDate) async {
+  Future<void> _selectDate(BuildContext context,
+      TextEditingController controller, DateTime? selectedDate) async {
     final DateTime? pickedDate = await showDatePicker(
       context: context,
-       initialDate: selectedDate ?? DateTime.now(),
+      initialDate: selectedDate ?? DateTime.now(),
       firstDate: DateTime(2000),
       lastDate: DateTime(2101),
     );
@@ -65,31 +60,23 @@ Future<void> _selectDate(BuildContext context,TextEditingController controller,D
     }
   }
 
-   
-
-  
-
-   Future<void> insertData() async {
-
-     var asset= Asset(
+  Future<void> insertData() async {
+    var asset = Asset(
       id: '',
-  type:typeController.text,
-   model:modelController.text,
-   owner:nameController.text,
-   serialNumber:serialNumberController.text,
-   status:statusController.text,
-   ownerShip:ownerShipController.text,
-   warrantyEndDate:warrantyController.text,
-      
+      type: typeController.text,
+      model: modelController.text,
+      owner: nameController.text,
+      serialNumber: serialNumberController.text,
+      status: statusController.text,
+      ownerShip: ownerShipController.text,
+      warrantyEndDate: warrantyController.text,
     );
 
-   await DatabaseTable.assets.insert(asset.toMap());
+    await DatabaseTable.assets.insert(asset.toMap());
   }
 
   String? assetStatus;
 
-  
-  
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -109,49 +96,50 @@ Future<void> _selectDate(BuildContext context,TextEditingController controller,D
             controller: modelController,
             decoration: InputDecoration(labelText: 'Model'),
           ),
-           TextField(
+          TextField(
             controller: serialNumberController,
             decoration: InputDecoration(labelText: 'Serial Number'),
           ),
-           TextField(
+          TextField(
             controller: ownerShipController,
             decoration: InputDecoration(labelText: 'Ownership'),
           ),
           TextFormField(
-                controller: dateController,
-                readOnly: true,
-                onTap: () => _selectDate(context,dateController,_selectedDate1),
-                decoration: InputDecoration(
-                  labelText: 'Purchase Date',
-                  suffixIcon: IconButton(
-                    icon: Icon(Icons.calendar_today),
-                    onPressed: () => _selectDate(context,dateController,_selectedDate1),
-                  ),
-                ),
+            controller: dateController,
+            readOnly: true,
+            onTap: () => _selectDate(context, dateController, _selectedDate1),
+            decoration: InputDecoration(
+              labelText: 'Purchase Date',
+              suffixIcon: IconButton(
+                icon: Icon(Icons.calendar_today),
+                onPressed: () =>
+                    _selectDate(context, dateController, _selectedDate1),
               ),
+            ),
+          ),
           TextField(
             controller: expenseController,
             decoration: InputDecoration(labelText: 'Expense'),
             keyboardType: TextInputType.number,
           ),
-
-          
           TextField(
             controller: statusController,
             decoration: InputDecoration(labelText: 'Status'),
           ),
           TextFormField(
-                controller: warrantyController,
-                readOnly: true,
-                onTap: () => _selectDate(context,warrantyController,_selectedDate2),
-                decoration: InputDecoration(
-                  labelText: 'Warranty Date',
-                  suffixIcon: IconButton(
-                    icon: Icon(Icons.calendar_today),
-                    onPressed: () => _selectDate(context,warrantyController,_selectedDate2),
-                  ),
-                ),
+            controller: warrantyController,
+            readOnly: true,
+            onTap: () =>
+                _selectDate(context, warrantyController, _selectedDate2),
+            decoration: InputDecoration(
+              labelText: 'Warranty Date',
+              suffixIcon: IconButton(
+                icon: Icon(Icons.calendar_today),
+                onPressed: () =>
+                    _selectDate(context, warrantyController, _selectedDate2),
               ),
+            ),
+          ),
         ],
       ),
       actions: [
@@ -196,24 +184,25 @@ class _EmployeeListState extends State<EmployeeList> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Employees List'),
-        actions: [ 
-           Align(
-      alignment: Alignment.topRight,
-      child: Padding(
-        padding: EdgeInsets.only(top: 8.0, right: 40.0), // Adjust as needed
-        child: IconButton(
-          icon: Icon(Icons.person_add, color: Colors.white),
-          onPressed: () {
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return YourForm();
-              },
-            );
-          },
-        ),
-      ),
-    ),
+        actions: [
+          Align(
+            alignment: Alignment.topRight,
+            child: Padding(
+              padding:
+                  EdgeInsets.only(top: 8.0, right: 40.0), // Adjust as needed
+              child: IconButton(
+                icon: Icon(Icons.person_add, color: Colors.white),
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return YourForm();
+                    },
+                  );
+                },
+              ),
+            ),
+          ),
         ],
       ),
       body: StateBuilder(
@@ -225,6 +214,7 @@ class _EmployeeListState extends State<EmployeeList> {
             itemCount: employees.length,
             itemBuilder: (context, index) {
               var employee = employees[index];
+
               return GestureDetector(
                 onTap: () {
                   AppRoute.push(
@@ -236,13 +226,18 @@ class _EmployeeListState extends State<EmployeeList> {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 10.0, vertical: 10),
-                    child: Column(
+                    child: Row(
                       children: [
-                        AppText(
-                          employee.name,
-                          weight: FontWeight.bold,
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            AppText(
+                              employee.name,
+                              weight: FontWeight.bold,
+                            ),
+                            AppText(employee.employeeId),
+                          ],
                         ),
-                        AppText(employee.employeeId),
                       ],
                     ),
                   ),

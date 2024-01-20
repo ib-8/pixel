@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:pretty_qr_code/pretty_qr_code.dart';
 import 'package:super_pixel/controller/asset_detail_controller.dart';
 import 'package:super_pixel/model/event.dart';
@@ -79,6 +80,12 @@ class _AssetDetailState extends State<AssetDetail>
     return StateBuilder(
       controller: AssetDetailController(widget.assetId),
       builder: (context, data) {
+        if (data.isLoading) {
+          return Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
+        }
+
         if (data.asset == null) {
           return const Scaffold(
             body: Center(
@@ -104,28 +111,69 @@ class _AssetDetailState extends State<AssetDetail>
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    AppText(
-                      asset.model,
-                      size: 20,
-                      weight: FontWeight.bold,
-                    ),
-                    Card(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20.0, vertical: 10.0),
-                        child: AppText(
-                          asset.status,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(height: 10),
+                        AppText(
+                          asset.model,
+                          size: 20,
                           weight: FontWeight.bold,
                         ),
-                      ),
+                        SizedBox(height: 10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Builder(builder: (context) {
+                              var isExpired =
+                                  DateTime.tryParse(asset.warrantyEndDate)
+                                      ?.difference(DateTime.now());
+
+                              print('expise ${isExpired?.inDays}');
+
+                              if (isExpired != null) {
+                                return Card(
+                                  margin: EdgeInsets.zero,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20.0, vertical: 10.0),
+                                    child: AppText(
+                                      isExpired.isNegative
+                                          ? 'Warranty Expired'
+                                          : 'Warranty Expire in ${isExpired.inDays.toString()} days',
+                                      weight: FontWeight.bold,
+                                    ),
+                                  ),
+                                );
+                              }
+
+                              return SizedBox();
+                            }),
+                            SizedBox(width: 20),
+                            Card(
+                              margin: EdgeInsets.zero,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20.0, vertical: 10.0),
+                                child: AppText(
+                                  asset.status,
+                                  weight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ],
                 ),
+                SizedBox(height: 10),
                 Row(
                   children: [
-                    const AppText(
-                      'Owner: ',
-                    ),
+                    if (asset.owner.isNotEmpty)
+                      const AppText(
+                        'Owner: ',
+                      ),
                     const SizedBox(width: 20),
                     AppText(
                       asset.owner,
@@ -219,10 +267,10 @@ class _AssetEventsState extends State<AssetEvents> {
               eventLog = '${EvenType.purchased} from ${event.vendor}';
               break;
             case EvenType.associated:
-              eventLog = '${EvenType.associated} with ${event.employee}';
+              eventLog = '${EvenType.associated} to ${event.employee}';
               break;
             case EvenType.dissociated:
-              eventLog = '${EvenType.dissociated} by ${event.employee}';
+              eventLog = '${EvenType.dissociated} from ${event.employee}';
               break;
             case EvenType.disposed:
               eventLog = '${EvenType.disposed} by ${event.employee}';
@@ -237,8 +285,26 @@ class _AssetEventsState extends State<AssetEvents> {
               eventLog = '${event.assetId} is ${EvenType.sentToService}';
               break;
           }
-          return AppText(eventLog);
+          return Card(
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+              child: Row(
+                children: [
+                  AppText(event.eventTime?.getDayAndMonth() ?? ''),
+                  SizedBox(width: 20),
+                  AppText(eventLog),
+                ],
+              ),
+            ),
+          );
         });
+  }
+}
+
+extension DateTimeExtension on DateTime {
+  String getDayAndMonth() {
+    return DateFormat('yyy, MMM dd').format(this);
   }
 }
 
@@ -258,24 +324,79 @@ class _AssetExpensesState extends State<AssetExpenses> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-        itemCount: widget.expenses.length,
-        itemBuilder: (context, index) {
-          var expenses = widget.expenses[index];
-          var expenseLog = '';
-          switch (expenses.type) {
-            case AssetExpenseType.newPurchase:
-              expenseLog = '${EvenType.purchased} - amount ${expenses.amount}';
-              break;
-            case AssetExpenseType.repair:
-              expenseLog =
-                  '${AssetExpenseType.repair} Reason - ${expenses.note} amount spent ${expenses.amount}';
-              break;
-            case AssetExpenseType.replacement:
-              expenseLog =
-                  '${AssetExpenseType.replacement} Reason - ${expenses.note}  amount spent ${expenses.amount}';
-              break;
-          }
-          return AppText(expenseLog);
-        });
+      itemCount: widget.expenses.length,
+      itemBuilder: (context, index) {
+        var expenses = widget.expenses[index];
+        var expenseLog = '';
+        switch (expenses.type) {
+          case AssetExpenseType.newPurchase:
+            expenseLog = '${EvenType.purchased} - amount ${expenses.amount}';
+            break;
+          case AssetExpenseType.repair:
+            expenseLog =
+                '${AssetExpenseType.repair} Reason - ${expenses.note} amount spent ${expenses.amount}';
+            break;
+          case AssetExpenseType.replacement:
+            expenseLog =
+                '${AssetExpenseType.replacement} Reason - ${expenses.note}  amount spent ${expenses.amount}';
+            break;
+        }
+        return Card(
+          child: Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    AppText(expenses.date?.getDayAndMonth() ?? ''),
+                    SizedBox(width: 20),
+                    AppText(
+                      expenses.type,
+                      weight: FontWeight.bold,
+                    ),
+                    SizedBox(width: 20),
+                    AppText(expenses.note),
+                  ],
+                ),
+                Row(
+                  children: [
+                    AppText(
+                      '₹ ${expenses.amount}',
+                      weight: FontWeight.bold,
+                    ),
+                    SizedBox(width: 20),
+                    GestureDetector(
+                      onTap: () {
+                        showDialog(
+                            barrierDismissible: true,
+                            context: context,
+                            builder: (context) {
+                              return Dialog(
+                                backgroundColor: Colors.transparent,
+                                child: Image.network(
+                                  'https://img.freepik.com/free-vector/minimal-yellow-invoice-template-vector-design_1017-12070.jpg',
+                                  // height: 50,
+                                  // width: 50,
+                                ),
+                              );
+                            });
+                      },
+                      child: Image.network(
+                        'https://img.freepik.com/free-vector/minimal-yellow-invoice-template-vector-design_1017-12070.jpg',
+                        height: 50,
+                        width: 50,
+                      ),
+                    ),
+                    SizedBox(width: 20),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 }

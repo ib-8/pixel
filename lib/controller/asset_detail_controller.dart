@@ -11,8 +11,6 @@ import 'package:super_pixel/utils/event_type.dart';
 class AssetDetailController extends ValueNotifier<AssetDetailState> {
   AssetDetailController(this.assetId) : super(AssetDetailState()) {
     getDetail();
-    getAllEvents();
-    getAllExpenses();
   }
 
   final String assetId;
@@ -37,6 +35,7 @@ class AssetDetailController extends ValueNotifier<AssetDetailState> {
   }
 
   getDetail() async {
+    value = value.copyWith(isLoading: true);
     print('getting detail>>>>>>>>> for $assetId');
     var response =
         await DatabaseTable.assets.select().eq('id', assetId).maybeSingle();
@@ -46,17 +45,30 @@ class AssetDetailController extends ValueNotifier<AssetDetailState> {
       value = value.copyWith(asset: Asset.from(response));
     }
 
+    await getAllEvents();
+
+    await getAllExpenses();
+
+    value = value.copyWith(isLoading: false);
+
     // print('all response is-------- $response');
   }
 
   getAllEvents() async {
-    var response = await DatabaseTable.events.select().eq('assetId', assetId);
+    var response = await DatabaseTable.events
+        .select()
+        .eq('assetId', assetId)
+        .order('eventTime', ascending: true);
+
     value = value.copyWith(events: response.map((e) => Event.from(e)).toList());
     print('all response is $response');
   }
 
   getAllExpenses() async {
-    var response = await DatabaseTable.expenses.select().eq('assetId', assetId);
+    var response = await DatabaseTable.expenses
+        .select()
+        .eq('assetId', assetId)
+        .order('date', ascending: true);
 
     var expenses = response.map((e) => Expenses.from(e)).toList();
 
@@ -79,6 +91,7 @@ class AssetDetailController extends ValueNotifier<AssetDetailState> {
       assetId: newAsset.id,
       type: EvenType.associated,
       employee: owner,
+      eventTime: DateTime.now(),
     );
 
     await DatabaseTable.events.insert(associationEvent.toMap());
@@ -97,6 +110,7 @@ class AssetDetailController extends ValueNotifier<AssetDetailState> {
         assetId: oldAsset.id,
         type: EvenType.dissociated,
         employee: owner,
+        eventTime: DateTime.now(),
       );
 
       await DatabaseTable.events.insert(dissociationEvent.toMap());
@@ -120,6 +134,7 @@ class AssetDetailController extends ValueNotifier<AssetDetailState> {
       assetId: _asset.id,
       type: EvenType.dissociated,
       employee: owner,
+      eventTime: DateTime.now(),
     );
 
     await DatabaseTable.events.insert(event.toMap());
@@ -142,8 +157,8 @@ class AssetDetailState {
     this.isUpdating = false,
   });
 
-  final bool? isLoading;
-  final bool? isUpdating;
+  final bool isLoading;
+  final bool isUpdating;
   final Asset? asset;
   final List<Event> events;
   final List<Expenses> expenses;

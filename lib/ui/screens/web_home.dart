@@ -6,7 +6,7 @@ import 'package:super_pixel/ui/screens/asset_detail.dart';
 import 'package:super_pixel/ui/screens/asset_list.dart';
 import 'package:super_pixel/ui/screens/dashboard.dart';
 import 'package:super_pixel/ui/screens/employee_list.dart';
-import 'package:super_pixel/ui/screens/requester_list.dart';
+import 'package:super_pixel/ui/screens/requests_list.dart';
 import 'package:super_pixel/ui/widget/app_sheet.dart';
 import 'package:super_pixel/ui/widget/app_text.dart';
 import 'package:super_pixel/ui/widget/asset_scanner.dart';
@@ -30,8 +30,7 @@ class WebHome extends StatelessWidget {
             LoginCard(
               lable: 'Admin',
               onTap: () {
-                AppRoute.pushRemove(
-                    context, const Home(userType: UserType.admin));
+                AppRoute.push(context, const Home(userType: UserType.admin));
               },
             ),
             const SizedBox(width: 50),
