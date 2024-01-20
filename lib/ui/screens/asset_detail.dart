@@ -347,145 +347,166 @@ class _AssetExpensesState extends State<AssetExpenses> {
   @override
   Widget build(BuildContext context) {
     var isMobile = Platform.isAndroid || Platform.isIOS;
-    return ListView.builder(
-      itemCount: widget.expenses.length,
-      itemBuilder: (context, index) {
-        var expenses = widget.expenses[index];
-        var expenseLog = '';
-        switch (expenses.type) {
-          case AssetExpenseType.newPurchase:
-            expenseLog = '${EvenType.purchased} - amount ${expenses.amount}';
-            break;
-          case AssetExpenseType.repair:
-            expenseLog =
-                '${AssetExpenseType.repair} Reason - ${expenses.note} amount spent ${expenses.amount}';
-            break;
-          case AssetExpenseType.replacement:
-            expenseLog =
-                '${AssetExpenseType.replacement} Reason - ${expenses.note}  amount spent ${expenses.amount}';
-            break;
-        }
 
-        if (isMobile) {
-          return Card(
-            child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+    var total = 0;
+    for (var element in widget.expenses) {
+      total = total + int.parse(element.amount);
+    }
+    return Column(
+      children: [
+        SizedBox(height: 10),
+        AppText(
+          'Total Expense so far \n ₹$total',
+          size: 20,
+          weight: FontWeight.bold,
+          align: TextAlign.center,
+          color: Color.fromARGB(255, 77, 56, 81),
+        ),
+        SizedBox(height: 10),
+        Flexible(
+          child: ListView.builder(
+            itemCount: widget.expenses.length,
+            itemBuilder: (context, index) {
+              var expenses = widget.expenses[index];
+              var expenseLog = '';
+              switch (expenses.type) {
+                case AssetExpenseType.newPurchase:
+                  expenseLog =
+                      '${EvenType.purchased} - amount ${expenses.amount}';
+                  break;
+                case AssetExpenseType.repair:
+                  expenseLog =
+                      '${AssetExpenseType.repair} Reason - ${expenses.note} amount spent ${expenses.amount}';
+                  break;
+                case AssetExpenseType.replacement:
+                  expenseLog =
+                      '${AssetExpenseType.replacement} Reason - ${expenses.note}  amount spent ${expenses.amount}';
+                  break;
+              }
+
+              if (isMobile) {
+                return Card(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20.0, vertical: 20.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                AppText(expenses.date?.getDayAndMonth() ?? ''),
+                                const SizedBox(width: 20),
+                                AppText(
+                                  expenses.type,
+                                  weight: FontWeight.bold,
+                                ),
+                                const SizedBox(width: 20),
+                              ],
+                            ),
+                            AppText(expenses.note),
+                            AppText(
+                              '₹ ${expenses.amount}',
+                              weight: FontWeight.bold,
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            const SizedBox(width: 20),
+                            GestureDetector(
+                              onTap: () {
+                                showDialog(
+                                  barrierDismissible: true,
+                                  context: context,
+                                  builder: (context) {
+                                    return Dialog(
+                                      backgroundColor: Colors.transparent,
+                                      child: Image.network(
+                                        'https://img.freepik.com/free-vector/minimal-yellow-invoice-template-vector-design_1017-12070.jpg',
+                                        // height: 50,
+                                        // width: 50,
+                                      ),
+                                    );
+                                  },
+                                );
+                              },
+                              child: Image.network(
+                                'https://img.freepik.com/free-vector/minimal-yellow-invoice-template-vector-design_1017-12070.jpg',
+                                height: 50,
+                                width: 50,
+                              ),
+                            ),
+                            const SizedBox(width: 20),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }
+
+              return Card(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 20.0, vertical: 20.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Row(
                         children: [
                           AppText(expenses.date?.getDayAndMonth() ?? ''),
-                          const SizedBox(width: 20),
+                          SizedBox(width: 20),
                           AppText(
                             expenses.type,
                             weight: FontWeight.bold,
                           ),
-                          const SizedBox(width: 20),
+                          SizedBox(width: 20),
+                          AppText(expenses.note),
                         ],
                       ),
-                      AppText(expenses.note),
-                      AppText(
-                        '₹ ${expenses.amount}',
-                        weight: FontWeight.bold,
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      const SizedBox(width: 20),
-                      GestureDetector(
-                        onTap: () {
-                          showDialog(
-                            barrierDismissible: true,
-                            context: context,
-                            builder: (context) {
-                              return Dialog(
-                                backgroundColor: Colors.transparent,
-                                child: Image.network(
-                                  'https://img.freepik.com/free-vector/minimal-yellow-invoice-template-vector-design_1017-12070.jpg',
-                                  // height: 50,
-                                  // width: 50,
-                                ),
-                              );
+                      Row(
+                        children: [
+                          AppText(
+                            '₹ ${expenses.amount}',
+                            weight: FontWeight.bold,
+                          ),
+                          SizedBox(width: 20),
+                          GestureDetector(
+                            onTap: () {
+                              showDialog(
+                                  barrierDismissible: true,
+                                  context: context,
+                                  builder: (context) {
+                                    return Dialog(
+                                      backgroundColor: Colors.transparent,
+                                      child: Image.network(
+                                        'https://img.freepik.com/free-vector/minimal-yellow-invoice-template-vector-design_1017-12070.jpg',
+                                        // height: 50,
+                                        // width: 50,
+                                      ),
+                                    );
+                                  });
                             },
-                          );
-                        },
-                        child: Image.network(
-                          'https://img.freepik.com/free-vector/minimal-yellow-invoice-template-vector-design_1017-12070.jpg',
-                          height: 50,
-                          width: 50,
-                        ),
+                            child: Image.network(
+                              'https://img.freepik.com/free-vector/minimal-yellow-invoice-template-vector-design_1017-12070.jpg',
+                              height: 50,
+                              width: 50,
+                            ),
+                          ),
+                          SizedBox(width: 20),
+                        ],
                       ),
-                      const SizedBox(width: 20),
                     ],
                   ),
-                ],
-              ),
-            ),
-          );
-        }
-
-        return Card(
-          child: Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    AppText(expenses.date?.getDayAndMonth() ?? ''),
-                    SizedBox(width: 20),
-                    AppText(
-                      expenses.type,
-                      weight: FontWeight.bold,
-                    ),
-                    SizedBox(width: 20),
-                    AppText(expenses.note),
-                  ],
                 ),
-                Row(
-                  children: [
-                    AppText(
-                      '₹ ${expenses.amount}',
-                      weight: FontWeight.bold,
-                    ),
-                    SizedBox(width: 20),
-                    GestureDetector(
-                      onTap: () {
-                        showDialog(
-                            barrierDismissible: true,
-                            context: context,
-                            builder: (context) {
-                              return Dialog(
-                                backgroundColor: Colors.transparent,
-                                child: Image.network(
-                                  'https://img.freepik.com/free-vector/minimal-yellow-invoice-template-vector-design_1017-12070.jpg',
-                                  // height: 50,
-                                  // width: 50,
-                                ),
-                              );
-                            });
-                      },
-                      child: Image.network(
-                        'https://img.freepik.com/free-vector/minimal-yellow-invoice-template-vector-design_1017-12070.jpg',
-                        height: 50,
-                        width: 50,
-                      ),
-                    ),
-                    SizedBox(width: 20),
-                  ],
-                ),
-              ],
-            ),
+              );
+            },
           ),
-        );
-      },
+        ),
+      ],
     );
   }
 }
