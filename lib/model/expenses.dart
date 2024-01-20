@@ -35,7 +35,7 @@ class Expenses {
       'amount': amount,
       'vendor': vendor,
       'note': note,
-      'date': date
+      'date': date.toString(),
     };
   }
 }
