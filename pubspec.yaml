@@ -40,8 +40,8 @@ dependencies:
   pretty_qr_code: 3.1.0
   mobile_scanner: 3.5.6
   fluttertoast: 8.2.2
-  sqflite: ^2.3.0
-  path: ^1.8.0
+  # sqflite: ^2.3.0
+  # path: ^1.8.0
   intl: ^0.19.0
 
 dev_dependencies:

@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:super_pixel/controller/requester_controller.dart';
 import 'package:super_pixel/database_table.dart';
 import 'package:super_pixel/model/asset.dart';
