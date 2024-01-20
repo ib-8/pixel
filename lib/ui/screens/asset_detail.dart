@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pretty_qr_code/pretty_qr_code.dart';
@@ -22,7 +24,7 @@ class AssetDetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Asset Details>>'),
+        title: const Text('Asset Details'),
       ),
       body: ListView.builder(
         itemCount: rowsData.length,
@@ -30,15 +32,15 @@ class AssetDetailsPage extends StatelessWidget {
           List<String> rowData = rowsData[index];
 
           return Card(
-            margin: EdgeInsets.all(8.0),
+            margin: const EdgeInsets.all(8.0),
             child: Padding(
-              padding: EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: rowData.map((cellData) {
                   return Text(
                     cellData,
-                    style: TextStyle(fontSize: 16.0),
+                    style: const TextStyle(fontSize: 16.0),
                   );
                 }).toList(),
               ),
@@ -70,6 +72,13 @@ class _AssetDetailState extends State<AssetDetail>
   }
 
   @override
+  void didChangeDependencies() {
+    print('<<<<object>>>>');
+    AssetDetailController.getInstance(widget.assetId).getDetail();
+    super.didChangeDependencies();
+  }
+
+  @override
   void dispose() {
     AssetDetailController.close(widget.assetId);
     super.dispose();
@@ -78,10 +87,10 @@ class _AssetDetailState extends State<AssetDetail>
   @override
   Widget build(BuildContext context) {
     return StateBuilder(
-      controller: AssetDetailController(widget.assetId),
+      controller: AssetDetailController.getInstance(widget.assetId),
       builder: (context, data) {
         if (data.isLoading) {
-          return Scaffold(
+          return const Scaffold(
             body: Center(child: CircularProgressIndicator()),
           );
         }
@@ -103,7 +112,16 @@ class _AssetDetailState extends State<AssetDetail>
 
         print('events length ${data.events.length}');
         return Scaffold(
-          appBar: AppBar(),
+          appBar: AppBar(
+            actions: [
+              // IconButton(
+              //   icon: Icon(Icons.refresh),
+              //   onPressed: () {
+              //     AssetDetailController.getInstance(widget.assetId).getDetail();
+              //   },
+              // )
+            ],
+          ),
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Column(
@@ -114,13 +132,13 @@ class _AssetDetailState extends State<AssetDetail>
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         AppText(
                           asset.model,
                           size: 20,
                           weight: FontWeight.bold,
                         ),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -147,9 +165,9 @@ class _AssetDetailState extends State<AssetDetail>
                                 );
                               }
 
-                              return SizedBox();
+                              return const SizedBox();
                             }),
-                            SizedBox(width: 20),
+                            const SizedBox(width: 20),
                             Card(
                               margin: EdgeInsets.zero,
                               child: Padding(
@@ -167,7 +185,7 @@ class _AssetDetailState extends State<AssetDetail>
                     ),
                   ],
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Row(
                   children: [
                     if (asset.owner.isNotEmpty)
@@ -209,33 +227,37 @@ class _AssetDetailState extends State<AssetDetail>
                       AssetExpenses(expenses: data.expenses),
                     ],
                   ),
-                )
+                ),
               ],
             ),
           ),
-          floatingActionButton: Builder(builder: (context) {
-            if (data.asset!.status == AssetStatus.inStock ||
-                data.asset!.status == AssetStatus.inUse) {
-              return FloatingActionButton(
-                onPressed: () async {
-                  await AppSheet.show(
-                    context: context,
-                    builder: (context) {
-                      if (data.asset!.status == AssetStatus.inUse) {
-                        return DissociationForm(assetId: data.asset!.id);
-                      } else {
-                        return AssociationForm(assetId: data.asset!.id);
-                      }
-                    },
-                  );
+          floatingActionButton: Builder(
+            builder: (context) {
+              if (data.asset!.status == AssetStatus.inStock ||
+                  data.asset!.status == AssetStatus.inUse) {
+                return FloatingActionButton(
+                  onPressed: () async {
+                    await AppSheet.show(
+                      context: context,
+                      builder: (context) {
+                        if (data.asset!.status == AssetStatus.inUse) {
+                          return DissociationForm(assetId: data.asset!.id);
+                        } else {
+                          return AssociationForm(assetId: data.asset!.id);
+                        }
+                      },
+                    );
 
-                  AssetDetailController.getInstance(widget.assetId).getDetail();
-                },
-              );
-            }
+                    AssetDetailController.getInstance(widget.assetId)
+                        .getDetail();
+                  },
+                  child: const Icon(Icons.account_tree),
+                );
+              }
 
-            return const SizedBox();
-          }),
+              return const SizedBox();
+            },
+          ),
         );
       },
     );
@@ -258,47 +280,48 @@ class _AssetEventsState extends State<AssetEvents> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-        itemCount: widget.events.length,
-        itemBuilder: (context, index) {
-          var event = widget.events[index];
-          var eventLog = '';
-          switch (event.type) {
-            case EvenType.purchased:
-              eventLog = '${EvenType.purchased} from ${event.vendor}';
-              break;
-            case EvenType.associated:
-              eventLog = '${EvenType.associated} to ${event.employee}';
-              break;
-            case EvenType.dissociated:
-              eventLog = '${EvenType.dissociated} from ${event.employee}';
-              break;
-            case EvenType.disposed:
-              eventLog = '${EvenType.disposed} by ${event.employee}';
-              break;
-            case EvenType.missed:
-              eventLog = '${event.assetId} is ${EvenType.missed}';
-              break;
-            case EvenType.sentToService:
-              eventLog = '${event.assetId} is ${EvenType.sentToService}';
-              break;
-            case EvenType.receivedFromService:
-              eventLog = '${event.assetId} is ${EvenType.sentToService}';
-              break;
-          }
-          return Card(
-            child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
-              child: Row(
-                children: [
-                  AppText(event.eventTime?.getDayAndMonth() ?? ''),
-                  SizedBox(width: 20),
-                  AppText(eventLog),
-                ],
-              ),
+      itemCount: widget.events.length,
+      itemBuilder: (context, index) {
+        var event = widget.events[index];
+        var eventLog = '';
+        switch (event.type) {
+          case EvenType.purchased:
+            eventLog = '${EvenType.purchased} from ${event.vendor}';
+            break;
+          case EvenType.associated:
+            eventLog = '${EvenType.associated} to ${event.employee}';
+            break;
+          case EvenType.dissociated:
+            eventLog = '${EvenType.dissociated} from ${event.employee}';
+            break;
+          case EvenType.disposed:
+            eventLog = '${EvenType.disposed}';
+            break;
+          case EvenType.missed:
+            eventLog = '${EvenType.missed}';
+            break;
+          case EvenType.sentToService:
+            eventLog = '${EvenType.sentToService}';
+            break;
+          case EvenType.receivedFromService:
+            eventLog = '${EvenType.receivedFromService}';
+            break;
+        }
+        return Card(
+          child: Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+            child: Row(
+              children: [
+                AppText(event.eventTime?.getDayAndMonth() ?? ''),
+                const SizedBox(width: 20),
+                AppText(eventLog),
+              ],
             ),
-          );
-        });
+          ),
+        );
+      },
+    );
   }
 }
 
@@ -323,6 +346,7 @@ class AssetExpenses extends StatefulWidget {
 class _AssetExpensesState extends State<AssetExpenses> {
   @override
   Widget build(BuildContext context) {
+    var isMobile = Platform.isAndroid || Platform.isIOS;
     return ListView.builder(
       itemCount: widget.expenses.length,
       itemBuilder: (context, index) {
@@ -341,6 +365,71 @@ class _AssetExpensesState extends State<AssetExpenses> {
                 '${AssetExpenseType.replacement} Reason - ${expenses.note}  amount spent ${expenses.amount}';
             break;
         }
+
+        if (isMobile) {
+          return Card(
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          AppText(expenses.date?.getDayAndMonth() ?? ''),
+                          const SizedBox(width: 20),
+                          AppText(
+                            expenses.type,
+                            weight: FontWeight.bold,
+                          ),
+                          const SizedBox(width: 20),
+                        ],
+                      ),
+                      AppText(expenses.note),
+                      AppText(
+                        '₹ ${expenses.amount}',
+                        weight: FontWeight.bold,
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      const SizedBox(width: 20),
+                      GestureDetector(
+                        onTap: () {
+                          showDialog(
+                            barrierDismissible: true,
+                            context: context,
+                            builder: (context) {
+                              return Dialog(
+                                backgroundColor: Colors.transparent,
+                                child: Image.network(
+                                  'https://img.freepik.com/free-vector/minimal-yellow-invoice-template-vector-design_1017-12070.jpg',
+                                  // height: 50,
+                                  // width: 50,
+                                ),
+                              );
+                            },
+                          );
+                        },
+                        child: Image.network(
+                          'https://img.freepik.com/free-vector/minimal-yellow-invoice-template-vector-design_1017-12070.jpg',
+                          height: 50,
+                          width: 50,
+                        ),
+                      ),
+                      const SizedBox(width: 20),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+
         return Card(
           child: Padding(
             padding:

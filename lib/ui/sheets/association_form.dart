@@ -85,7 +85,7 @@ class _AssociationFormState extends State<AssociationForm> {
                           },
                         );
                       },
-                      lable: 'Scan Old Asset',
+                      lable: oldAsset?.model ?? 'Scan Old Asset',
                     ),
                     FormTile(
                       onTap: () async {},
@@ -135,7 +135,7 @@ class _AssociationFormState extends State<AssociationForm> {
                         .associate(
                       owner: employee!,
                       newAsset: asset,
-                      oldAsset: oldAsset,
+                      oldAssett: oldAsset,
                     );
                   }
 

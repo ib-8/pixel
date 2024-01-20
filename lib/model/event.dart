@@ -40,7 +40,7 @@ class Event {
       'type': type,
       'employee': employee,
       'vendor': vendor,
-      'eventTime': eventTime,
+      'eventTime': eventTime.toString(),
     };
   }
 }
