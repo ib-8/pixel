@@ -121,12 +121,12 @@ class _HomeState extends State<Home> {
                       lable: 'Home',
                       onTap: () => onTabChange(0),
                     ),
-                  if (widget.userType == UserType.admin)
+                  if (widget.userType == UserType.admin || widget.userType == UserType.employee)
                     HomeCard(
                       lable: 'Assets',
                       onTap: () => onTabChange(1),
                     ),
-                  if (widget.userType == UserType.admin)
+                  if (widget.userType == UserType.admin || widget.userType == UserType.employee)
                     HomeCard(
                       lable: 'Employees',
                       onTap: () => onTabChange(2),
