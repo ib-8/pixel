@@ -63,6 +63,7 @@ class _AppState extends State<App> {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
+        // home: AssetDetail(assetId: '11', showForWeb: true),
         onGenerateRoute: (settings) {
           if (settings.name != '/') {
             var id = settings.name?.replaceAll('/', '');
@@ -73,6 +74,9 @@ class _AppState extends State<App> {
           } else {
             return MaterialPageRoute(builder: (context) => const WebHome());
           }
+
+          // return MaterialPageRoute(
+          //     builder: (context) => AssetDetail(assetId: '11');
         },
       ),
     );

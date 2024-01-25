@@ -14,6 +14,7 @@ import 'package:super_pixel/ui/widget/app_text.dart';
 import 'package:super_pixel/utils/asset_status.dart';
 import 'package:super_pixel/utils/asset_expense_type.dart';
 import 'package:super_pixel/utils/event_type.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AssetDetailsPage extends StatelessWidget {
   final List<List<String>> rowsData;
@@ -53,9 +54,11 @@ class AssetDetailsPage extends StatelessWidget {
 }
 
 class AssetDetail extends StatefulWidget {
-  const AssetDetail({required this.assetId, super.key});
+  const AssetDetail(
+      {required this.assetId, this.showForWeb = false, super.key});
 
   final String assetId;
+  final bool showForWeb;
   @override
   State<AssetDetail> createState() => _AssetDetailState();
 }
@@ -111,6 +114,100 @@ class _AssetDetailState extends State<AssetDetail>
         var asset = data.asset!;
 
         print('events length ${data.events.length}');
+
+        if (widget.showForWeb) {
+          return Scaffold(
+            // appBar: AppBar(
+            //   title: AppText('Product Details'),
+            // ),
+            body: Center(
+              child: Card(
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      AppText(
+                        'Product Details',
+                        weight: FontWeight.bold,
+                        size: 20,
+                      ),
+                      SizedBox(height: 20),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          AppText('Product Name: '),
+                          SizedBox(width: 20),
+                          AppText(
+                            asset.model,
+                            weight: FontWeight.bold,
+                            size: 18,
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          AppText('Product Owner: '),
+                          SizedBox(width: 20),
+                          AppText(
+                            asset.owner,
+                            weight: FontWeight.bold,
+                            size: 18,
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 50),
+                      AppText(
+                        'This product belongs to Superops Technologies',
+                        weight: FontWeight.bold,
+                      ),
+                      SizedBox(height: 20),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          AppText(
+                            'Contact Details',
+                            weight: FontWeight.bold,
+                            align: TextAlign.center,
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          IconButton(
+                              onPressed: () async {
+                                final Uri launchUri = Uri(
+                                  scheme: 'tel',
+                                  path: '9790943238',
+                                );
+                                await launchUrl(launchUri);
+                              },
+                              icon: Icon(Icons.phone)),
+                          IconButton(
+                              onPressed: () async {
+                                final Uri launchUri = Uri(
+                                  scheme: 'mailto',
+                                  path: 'contact@superops.ai',
+                                );
+                                await launchUrl(launchUri);
+                              },
+                              icon: Icon(Icons.mail)),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          );
+        }
+
         return Scaffold(
           appBar: AppBar(
             actions: [
