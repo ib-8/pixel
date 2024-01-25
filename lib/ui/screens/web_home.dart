@@ -33,20 +33,7 @@ class WebHome extends StatelessWidget {
                 AppRoute.push(context, const Home(userType: UserType.admin));
               },
             ),
-            const SizedBox(width: 50),
-            LoginCard(
-              lable: 'Employee',
-              onTap: () {
-                AppRoute.push(context, const Home(userType: UserType.employee));
-              },
-            ),
-            const SizedBox(width: 50),
-            LoginCard(
-              lable: 'Finance',
-              onTap: () {
-                AppRoute.push(context, const Home(userType: UserType.finance));
-              },
-            ),
+            
           ],
         ),
       ),

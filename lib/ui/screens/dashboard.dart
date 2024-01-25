@@ -45,6 +45,8 @@ class _DashboardState extends State<Dashboard> {
             padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
             child: Column(
               children: [
+                AppText('Inventory Summary',weight: FontWeight.bold,  size: 30,),
+                SizedBox(height: 20),
                 Wrap(
                   crossAxisAlignment: WrapCrossAlignment.center,
                   alignment: WrapAlignment.center,
@@ -103,10 +105,12 @@ class _DashboardState extends State<Dashboard> {
                     }).toList(),
                   ],
                 ),
+                
 
                 AppText(
-                  'Warranty Status',
+                  'Warranty Summary',
                   size: 30,
+                  weight: FontWeight.bold,
                 ),
 
                 // Display warranty status count in a separate card

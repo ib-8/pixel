@@ -15,7 +15,6 @@ import 'package:super_pixel/ui/screens/employee_detail.dart';
 import 'package:super_pixel/ui/state_builder.dart';
 import 'package:super_pixel/ui/widget/app_sheet.dart';
 import 'package:super_pixel/ui/widget/app_text.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
